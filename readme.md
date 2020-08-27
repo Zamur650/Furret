@@ -3,6 +3,7 @@
 
 ## List of content
 * [About](https://github.com/Zamur650/Furret#About)
+* [Functions](https://github.com/Zamur650/Furret#functions)
 * [Config.json guide](https://github.com/Zamur650/Furret#configjson-guide)
   * [token](https://github.com/Zamur650/Furret#token)
   * [prefix](https://github.com/Zamur650/Furret#prefix)
@@ -13,6 +14,8 @@
 * [Install](https://github.com/Zamur650/Furret#install)
 ### About
 This bot made on [Discord.js](https://github.com/discordjs/discord.js) by Zamur650
+### Functions
+prefix + help - Displays this message  prefix + hi - Say hello  prefix + server - Server information  prefix + me - Get information about yourself  prefix + news - News  prefix + password - Generate passwords  prefix + music (link) - play music from YouTube (in development)  prefix + color (color) - display the color in hex (#ffffff) or rgb (rgb (0,0,0)) no spaces or random (random color in hex (#ffffff) format)
 ## Config.json guide
 ### token
 You can get token [here](https://discord.com/developers/applications)
