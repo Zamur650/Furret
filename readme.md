@@ -15,7 +15,14 @@
 ### About
 This bot made on [Discord.js](https://github.com/discordjs/discord.js) by Zamur650
 ### Functions
-prefix + help - Displays this message  prefix + hi - Say hello  prefix + server - Server information  prefix + me - Get information about yourself  prefix + news - News  prefix + password - Generate passwords  prefix + music (link) - play music from YouTube (in development)  prefix + color (color) - display the color in hex (#ffffff) or rgb (rgb (0,0,0)) no spaces or random (random color in hex (#ffffff) format)
+prefix + help - Displays this message
+prefix + hi - Say hello
+prefix + server - Server information
+prefix + me - Get information about yourself
+prefix + news - News
+prefix + password - Generate passwords
+prefix + music (link) - play music from YouTube (in development)
+prefix + color (color) - display the color in hex (#ffffff) or rgb (rgb (0,0,0)) no spaces or random (random color in hex (#ffffff) format)
 ## Config.json guide
 ### token
 You can get token [here](https://discord.com/developers/applications)
