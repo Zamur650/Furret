@@ -1,13 +1,10 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const ytdl = require('ytdl-core');
-//const ytsr = require('ytsr');
 const Canvas = require('canvas');
 const { createCanvas } = require('canvas');
-const { token, prefix, news, welcomeChannel, backgroundWelcomeImageName, forbiddenWords } = require('./config.json');
+const { token, prefix, news, welcomeChannel, backgroundWelcomeImageName } = require('./config.json');
 
-/*let filter;
-ytsr.do_warn_deprecate = false;*/
 const canvas = createCanvas(500, 500);
 const ctx = canvas.getContext('2d');
 let charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -24,16 +21,6 @@ client.once('disconnect', () => {
 });
 
 client.on('message', message => {
-  /*if (true) {
-    for (let i = 0; i < forbiddenWords.length; i++) {
-      if (forbiddenWords[i].indexOf(message.content)) {
-        message.delete();
-        if (member.report > 4){
-          member.kick();
-        }
-      }
-    }
-  }*/
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
   const args = message.content.slice(prefix.length).trim().split(/ +/);
@@ -117,29 +104,25 @@ client.on('message', async message => {
   const command = args.shift().toLowerCase();
   if (command === 'music') {
     try {
-      /*for (let i = 0; i < args; i++) {
-        let userSearch = + args[i] + ' ';
-        console.log(userSearch);
-      }
-      let videoLink = ytsr.getFilters(args[0], function (err, filters) {
-        if (err) throw err;
-        filter = filters.get('Type').find(o => o.name === 'Video');
-        ytsr.getFilters(filter.ref, function (err, filters) {
-          if (err) throw err;
-          filter = filters.get('Duration').find(o => o.name.startsWith('Short'));
-          var options = {
-            limit: 5,
-            nextpageRef: filter.ref,
-          }
-          ytsr(null, options, function (err, searchResults) {
-            if (err) throw err;
-            dosth(searchResults.items[0].link);
+      if (args[0] != undefined) {
+        if (message.member.voice.channel) {
+          const connection = await message.member.voice.channel.join();
+          const dispatcher = await connection.play(ytdl(args[0], { type: 'opus' }));
+
+          dispatcher.on('start', () => {
+            message.channel.send(`Начинаю воспроизведение ${args[0]}:musical_note:`)
           });
-        });
-      });*/
-      if (message.member.voice.channel) {
-        const connection = await message.member.voice.channel.join();
-        const dispatcher = await connection.play(ytdl(args[0], { type: 'opus' }));
+
+          dispatcher.on('finish', () => {
+            message.channel.send(`Воспроизведение завершено :musical_note:`)
+          });
+
+          dispatcher.on('error', console.error);
+        } else {
+          message.channel.send('Вы не в канале :no_entry_sign:')
+        }
+      } else {
+        message.channel.send('Вы не указали что мне играть :no_entry_sign:')
       }
     } catch {
       return;

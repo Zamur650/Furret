@@ -3,8 +3,5 @@
   "prefix": "^",
   "news": "текст",
   "welcomeChannel": "приветствуем",
-  "backgroundWelcomeImageName": "wallpaper.png",
-  "forbiddenWords": [
-    "сок", "апельсин", "пика"
-  ]
+  "backgroundWelcomeImageName": "wallpaper.png"
 }

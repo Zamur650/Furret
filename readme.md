@@ -1,5 +1,6 @@
 # Furret bot for discord
 This bot made on *Discord.js*
+![botIcon](botIcon)
 [link to repository](https://github.com/Zamur650/Furret)
 ## Config.json guide
 ### token
@@ -18,6 +19,8 @@ Image using in welcomeChannel
   "prefix": "!",
   "news": "text",
   "welcomeChannel": "welcome",
-  "backgroundWelcomeImageName": "wallpaper.png",
+  "backgroundWelcomeImageName": "wallpaper.png"
 }
 ```
+## Testing
+### :)

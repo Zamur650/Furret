@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "startCmd": "start start.bat"
+    "startCmd": "start start.bat",
+    "npm_install": "npm i"
   },
   "author": "Zamur",
   "license": "ISC",
@@ -15,7 +16,6 @@
     "discord.js": "^12.2.0",
     "ffmpeg": "0.0.4",
     "opusscript": "0.0.7",
-    "ytdl-core": "^3.2.1",
-    "ytsr": "^0.1.21"
+    "ytdl-core": "^3.2.1"
   }
 }
