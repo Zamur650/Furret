@@ -12,9 +12,9 @@
   * [backgroundWelcomeImageName](https://github.com/Zamur650/Furret#backgroundwelcomeimagename)
 * [Dependencies](https://github.com/Zamur650/Furret#dependencies)
 * [Install](https://github.com/Zamur650/Furret#install)
-### About
+## About
 This bot made on [Discord.js](https://github.com/discordjs/discord.js) by Zamur650
-### Functions
+## Functions
 prefix + help - Displays this message
 
 prefix + hi - Say hello
