@@ -110,7 +110,7 @@ client.on('message', async message => {
           const dispatcher = await connection.play(ytdl(args[0], { type: 'opus' }));
 
           dispatcher.on('start', () => {
-            message.channel.send(`Начинаю воспроизведение ${args[0]}:musical_note:`)
+            message.channel.send(`Начинаю воспроизведение :musical_note:`)
           });
 
           dispatcher.on('finish', () => {
