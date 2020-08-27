@@ -1,7 +1,7 @@
 # Furret bot for discord
 ![botIcon](botIcon.png)
 
-This bot made on *Discord.js*
+This bot made on [Discord.js](https://github.com/discordjs/discord.js)
 [link to repository](https://github.com/Zamur650/Furret)
 ## Config.json guide
 ### token
@@ -23,5 +23,13 @@ Image using in welcomeChannel
   "backgroundWelcomeImageName": "wallpaper.png"
 }
 ```
-## Testing
-### :)
+## Dependencies
+### List
+avconv: ^3.1.0,
+canvas: ^2.6.1,
+discord.js: ^12.2.0,
+ffmpeg: 0.0.4,
+opusscript: 0.0.7,
+ytdl-core: ^3.2.1
+### Install
+npm install avconv canvas discord.js ffmpeg oppusscript ytdl-core
