@@ -1,8 +1,8 @@
 # Furret bot for discord
 ![botIcon](botIcon.png)
 
-This bot made on [Discord.js](https://github.com/discordjs/discord.js)
 ## List of content
+* [About](https://github.com/Zamur650/Furret#About)
 * [Config.json guide](https://github.com/Zamur650/Furret#configjson-guide)
   * [token](https://github.com/Zamur650/Furret#token)
   * [prefix](https://github.com/Zamur650/Furret#prefix)
@@ -11,6 +11,8 @@ This bot made on [Discord.js](https://github.com/discordjs/discord.js)
   * [backgroundWelcomeImageName](https://github.com/Zamur650/Furret#backgroundwelcomeimagename)
 * [Dependencies](https://github.com/Zamur650/Furret#dependencies)
 * [Install](https://github.com/Zamur650/Furret#install)
+### About
+This bot made on [Discord.js](https://github.com/discordjs/discord.js) by Zamur650
 ## Config.json guide
 ### token
 You can get token [here](https://discord.com/developers/applications)
