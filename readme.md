@@ -1,5 +1,6 @@
 # Furret bot for discord
 ![botIcon](botIcon.png)
+
 This bot made on *Discord.js*
 [link to repository](https://github.com/Zamur650/Furret)
 ## Config.json guide
