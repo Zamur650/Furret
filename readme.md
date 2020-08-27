@@ -31,8 +31,12 @@ opusscript: 0.0.7,
 ytdl-core: ^3.2.1
 ## Install
 You need install [node](https://nodejs.org/en/)
+
 In console you need to write in cmd/bash
 ```npm install avconv canvas discord.js ffmpeg oppusscript ytdl-core```
+
 After this you need to install [FFmpeg](https://ffmpeg.org/download.html)
+
 To start it you need to write node index.js
+
 Enjoy :D
