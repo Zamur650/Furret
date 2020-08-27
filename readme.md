@@ -2,6 +2,15 @@
 ![botIcon](botIcon.png)
 
 This bot made on [Discord.js](https://github.com/discordjs/discord.js)
+## List of content
+* [Config.json guide](https://github.com/Zamur650/Furret#configjson-guide)
+  * [token](https://github.com/Zamur650/Furret#token)
+  * [prefix](https://github.com/Zamur650/Furret#prefix)
+  * [news](https://github.com/Zamur650/Furret#news)
+  * [welcomeChannel](https://github.com/Zamur650/Furret#welcomechannel)
+  * [backgroundWelcomeImageName](https://github.com/Zamur650/Furret#backgroundwelcomeimagename)
+* [Dependencies](https://github.com/Zamur650/Furret#dependencies)
+* [Install](https://github.com/Zamur650/Furret#install)
 ## Config.json guide
 ### token
 You can get token [here](https://discord.com/developers/applications)
