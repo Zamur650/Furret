@@ -32,4 +32,4 @@ ffmpeg: 0.0.4,
 opusscript: 0.0.7,
 ytdl-core: ^3.2.1
 ### Install
-npm install avconv canvas discord.js ffmpeg oppusscript ytdl-core
+```npm install avconv canvas discord.js ffmpeg oppusscript ytdl-core```
