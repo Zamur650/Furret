@@ -2,15 +2,15 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const ytdl = require('ytdl-core');
 const Canvas = require('canvas');
-const { createCanvas } = require('canvas');
 const Pokedex = require('pokedex');
+const { createCanvas } = require('canvas');
 const { token, prefix, news, welcomeChannel, backgroundWelcomeImageName } = require('./config.json');
 
 const canvas = createCanvas(500, 500);
 const ctx = canvas.getContext('2d');
+pokedex = new Pokedex();
 let charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 let hexCharset = 'ABCDEF0123456789';
-pokedex = new Pokedex();
 
 client.once('ready', () => {
   console.log(`Захожу как ${client.user.tag}!`);
