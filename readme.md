@@ -2,7 +2,8 @@
 ![botIcon](botIcon.png)
 
 ## List of content
-* [About](https://github.com/Zamur650/Furret#About)
+* [About](https://github.com/Zamur650/Furret#about)
+* [Files](https://github.com/Zamur650/Furret#files)
 * [Functions](https://github.com/Zamur650/Furret#functions)
 * [Config.json guide](https://github.com/Zamur650/Furret#configjson-guide)
   * [token](https://github.com/Zamur650/Furret#token)
@@ -12,6 +13,14 @@
   * [backgroundWelcomeImageName](https://github.com/Zamur650/Furret#backgroundwelcomeimagename)
 * [Dependencies](https://github.com/Zamur650/Furret#dependencies)
 * [Install](https://github.com/Zamur650/Furret#install)
+## Files
+1. [index.js](index.js) - main file
+2. [config.json](config.json) - config file
+3. [readme.md](readme.md) - this file
+4. [start.bat](start.bat)/[start.bash](start.bash) - start bat/bash files
+5. [package.json](package.json)/[package-lock.json](package-lock.json) - npm info files
+6. [ffmpeg.exe](ffmpeg.exe)/[ffplay.exe](ffplay.exe)/[ffprobe.exe](ffprobe.exe) - ffmpeg for music (windows)
+5. [botIcon.png](botIcon.png)/[wallpaper.png](wallpaper.png) - images for bot
 ## About
 This bot made on [Discord.js](https://github.com/discordjs/discord.js) by Zamur650
 ## Functions
@@ -53,12 +62,13 @@ Image using in welcomeChannel
 }
 ```
 ## Dependencies
-avconv: ^3.1.0,
-canvas: ^2.6.1,
-discord.js: ^12.2.0,
-ffmpeg: 0.0.4,
-opusscript: 0.0.7,
-ytdl-core: ^3.2.1
+[avconv: ^3.1.0,](https://www.npmjs.com/package/avconv)
+[canvas: ^2.6.1,](https://www.npmjs.com/package/canvas)
+[discord.js: ^12.2.0,](https://www.npmjs.com/package/discord.js)
+[ffmpeg: 0.0.4,](https://www.npmjs.com/package/ffmpeg)
+[opusscript: 0.0.7,](https://www.npmjs.com/package/opusscript)
+[pokedex: ^1.1.0,](https://www.npmjs.com/package/pokedex)
+[ytdl-core: ^3.2.1](https://www.npmjs.com/package/ytdl-core)
 ## Install
 You need install [node](https://nodejs.org/en/)
 
