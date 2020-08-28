@@ -93,16 +93,22 @@ client.on('message', message => {
     const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'ColorHexSend.png');
     message.channel.send(colorHex, attachment);
   } else if (command === 'pokedex') {
+    let pokemonName;
+    let pokemonImage;
     try {
-      let pokemonName;
-      pokemonName = pokedex.pokemon(args[0].toLowerCase).name;
+      pokemonName = pokedex.pokemon(args[0].toLowerCase()).name;
+      if (pokedex.pokemon(pokemonName).sprites.animated === undefined) {
+        pokemonImage = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${pokedex.pokemon(pokemonName).id}.png`
+      } else {
+        pokemonImage = pokedex.pokemon(pokemonName).sprites.animated;
+      }
       const Embed = new Discord.MessageEmbed()
         .setColor('#92ff8c')
         .setTitle(`Имя: ${pokemonName}`)
         .setDescription('Покемон')
-        .setThumbnail(pokedex.pokemon(pokemonName).sprites.animated)
+        .setThumbnail(pokemonImage)
         .addFields(
-          { name: 'Номер', value: pokedex.pokemon(pokemonName).name },
+          { name: 'Номер', value: pokedex.pokemon(pokemonName).id },
           { name: 'Рост', value: pokedex.pokemon(pokemonName).height },
           { name: 'Вес', value: pokedex.pokemon(pokemonName).weight }
         )
@@ -112,12 +118,18 @@ client.on('message', message => {
       message.channel.send(Embed);
     } catch {
       try {
-        pokemonName = pokedex.pokemon(Number(args[0].toLowerCase)).name;
+        pokemonName = pokedex.pokemon(Number(args[0])).name;
+        pokemonImage;
+        if (pokedex.pokemon(pokemonName).sprites.animated === undefined) {
+          pokemonImage = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${pokedex.pokemon(pokemonName).id}.png`
+        } else {
+          pokemonImage = pokedex.pokemon(pokemonName).sprites.animated;
+        }
         const Embed = new Discord.MessageEmbed()
           .setColor('#92ff8c')
           .setTitle(`Имя: ${pokemonName}`)
           .setDescription('Покемон')
-          .setThumbnail(pokedex.pokemon(pokemonName).sprites.animated)
+          .setThumbnail(pokemonImage)
           .addFields(
             { name: 'Номер', value: pokedex.pokemon(pokemonName).id },
             { name: 'Рост', value: pokedex.pokemon(pokemonName).height },
