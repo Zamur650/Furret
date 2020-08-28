@@ -2,8 +2,8 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const ytdl = require('ytdl-core');
 const Canvas = require('canvas');
-const createCanvas = require('canvas');
-var Pokedex = require('pokedex'),
+const { createCanvas } = require('canvas');
+const Pokedex = require('pokedex');
 const { token, prefix, news, welcomeChannel, backgroundWelcomeImageName } = require('./config.json');
 
 const canvas = createCanvas(500, 500);
@@ -92,23 +92,45 @@ client.on('message', message => {
     ctx.fillText(colorHex, 250, 300);
     const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'ColorHexSend.png');
     message.channel.send(colorHex, attachment);
-  } else if(command === 'pokedex'){
+  } else if (command === 'pokedex') {
+    try {
+      let pokemonName;
+      pokemonName = pokedex.pokemon(args[0].toLowerCase).name;
       const Embed = new Discord.MessageEmbed()
         .setColor('#92ff8c')
-        .setTitle(`Имя: ${const Embed = new Discord.MessageEmbed()
-        .setColor('#92ff8c')
-        .setTitle(`Имя: ${pokedex.pokemon(args[0]).name}`)
-        .setURL()
-        .setDescription(`Участник сервера: ${message.guild.name}`)
-        .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
+        .setTitle(`Имя: ${pokemonName}`)
+        .setDescription('Покемон')
+        .setThumbnail(pokedex.pokemon(pokemonName).sprites.animated)
         .addFields(
-          { name: 'Канал', value: channelEmbed },
-          { name: 'Id', value: message.author.id }
+          { name: 'Номер', value: pokedex.pokemon(pokemonName).name },
+          { name: 'Рост', value: pokedex.pokemon(pokemonName).height },
+          { name: 'Вес', value: pokedex.pokemon(pokemonName).weight }
         )
         .setTimestamp()
         .setFooter(client.user.tag, client.user.displayAvatarURL({ dynamic: true }));
 
       message.channel.send(Embed);
+    } catch {
+      try {
+        pokemonName = pokedex.pokemon(Number(args[0].toLowerCase)).name;
+        const Embed = new Discord.MessageEmbed()
+          .setColor('#92ff8c')
+          .setTitle(`Имя: ${pokemonName}`)
+          .setDescription('Покемон')
+          .setThumbnail(pokedex.pokemon(pokemonName).sprites.animated)
+          .addFields(
+            { name: 'Номер', value: pokedex.pokemon(pokemonName).id },
+            { name: 'Рост', value: pokedex.pokemon(pokemonName).height },
+            { name: 'Вес', value: pokedex.pokemon(pokemonName).weight }
+          )
+          .setTimestamp()
+          .setFooter(client.user.tag, client.user.displayAvatarURL({ dynamic: true }));
+
+        message.channel.send(Embed);
+      } catch{
+        message.channel.send('Ошибка: покемон не найден');
+      }
+    }
   } else if (command === 'join') {
     client.emit('guildMemberAdd', message.member);    
   } 
