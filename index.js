@@ -8,7 +8,7 @@ const { token, prefix, news, welcomeChannel, backgroundWelcomeImageName } = requ
 const canvas = createCanvas(500, 500);
 const ctx = canvas.getContext('2d');
 let charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-let hexCharset = 'abcdef0123456789';
+let hexCharset = 'ABCDEF0123456789';
 
 client.once('ready', () => {
   console.log(`Захожу как ${client.user.tag}!`);
