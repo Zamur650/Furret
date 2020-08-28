@@ -1,6 +1,7 @@
 {
   "token": "NjYyNTMzNjg1NTg0ODU1MDUw.Xg7Wkw.8msqJrbgL1tTvdir0K7DMfGpVuU",
   "prefix": "^",
+  "serverInfo": "Testing server by Zamur",
   "news": "текст",
   "welcomeChannel": "приветствуем",
   "backgroundWelcomeImageName": "wallpaper.png"
