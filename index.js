@@ -71,8 +71,6 @@ client.on('message', message => {
       password += charset.charAt(Math.floor(Math.random() * n));
     }
     message.channel.send(`Пароль: ${password}`);
-  } else if (command === 'online') {
-    message.channel.send();
   } else if (command === 'color') {    
     let colorHex = args[0];
     if (colorHex === 'random') {
@@ -95,7 +93,22 @@ client.on('message', message => {
     const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'ColorHexSend.png');
     message.channel.send(colorHex, attachment);
   } else if(command === 'pokedex'){
-    message.channel.send(pokedex.pokemon(args[0]));
+      const Embed = new Discord.MessageEmbed()
+        .setColor('#92ff8c')
+        .setTitle(`Имя: ${const Embed = new Discord.MessageEmbed()
+        .setColor('#92ff8c')
+        .setTitle(`Имя: ${pokedex.pokemon(args[0]).name}`)
+        .setURL()
+        .setDescription(`Участник сервера: ${message.guild.name}`)
+        .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
+        .addFields(
+          { name: 'Канал', value: channelEmbed },
+          { name: 'Id', value: message.author.id }
+        )
+        .setTimestamp()
+        .setFooter(client.user.tag, client.user.displayAvatarURL({ dynamic: true }));
+
+      message.channel.send(Embed);
   } else if (command === 'join') {
     client.emit('guildMemberAdd', message.member);    
   } 
