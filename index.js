@@ -2,13 +2,15 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const ytdl = require('ytdl-core');
 const Canvas = require('canvas');
-const { createCanvas } = require('canvas');
+const createCanvas = require('canvas');
+var Pokedex = require('pokedex'),
 const { token, prefix, news, welcomeChannel, backgroundWelcomeImageName } = require('./config.json');
 
 const canvas = createCanvas(500, 500);
 const ctx = canvas.getContext('2d');
 let charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 let hexCharset = 'ABCDEF0123456789';
+pokedex = new Pokedex();
 
 client.once('ready', () => {
   console.log(`Захожу как ${client.user.tag}!`);
@@ -92,6 +94,8 @@ client.on('message', message => {
     ctx.fillText(colorHex, 250, 300);
     const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'ColorHexSend.png');
     message.channel.send(colorHex, attachment);
+  } else if(command === 'pokedex'){
+    message.channel.send(pokedex.pokemon(args[0]));
   } else if (command === 'join') {
     client.emit('guildMemberAdd', message.member);    
   } 
