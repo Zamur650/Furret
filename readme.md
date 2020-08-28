@@ -30,6 +30,8 @@ prefix + password - Generate passwords
 prefix + music (link) - play music from YouTube (in development)
 
 prefix + color (color) - display the color in hex (#ffffff) or rgb (rgb (0,0,0)) no spaces or random (random color in hex (#ffffff) format)
+
+prefix + pokedex (name or id of pokemon) - display information about pokemon
 ## Config.json guide
 ### token
 You can get token [here](https://discord.com/developers/applications)
