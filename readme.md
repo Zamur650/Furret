@@ -7,6 +7,7 @@
 * [Config.json guide](https://github.com/Zamur650/Furret#configjson-guide)
   * [token](https://github.com/Zamur650/Furret#token)
   * [prefix](https://github.com/Zamur650/Furret#prefix)
+  * [serverInfo](https://github.com/Zamur650/Furret#serverInfo)
   * [news](https://github.com/Zamur650/Furret#news)
   * [welcomeChannel](https://github.com/Zamur650/Furret#welcomechannel)
   * [backgroundWelcomeImageName](https://github.com/Zamur650/Furret#backgroundwelcomeimagename)
@@ -45,6 +46,7 @@ Image using in welcomeChannel
 {
   "token": "Your_token",
   "prefix": "!",
+  "serverInfo": "Server info",
   "news": "text",
   "welcomeChannel": "welcome",
   "backgroundWelcomeImageName": "wallpaper.png"

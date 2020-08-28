@@ -3,7 +3,7 @@ const client = new Discord.Client();
 const ytdl = require('ytdl-core');
 const Canvas = require('canvas');
 const { createCanvas } = require('canvas');
-const { token, prefix, news, welcomeChannel, backgroundWelcomeImageName } = require('./config.json');
+const { token, prefix, news, welcomeChannel, backgroundWelcomeImageName, serverInfo } = require('./config.json');
 
 const canvas = createCanvas(500, 500);
 const ctx = canvas.getContext('2d');
@@ -32,7 +32,7 @@ client.on('message', message => {
     message.channel.send('Привет');
   } else if (command === 'server') {
     try {
-      message.channel.send(`Название сервера: ${message.guild.name}\nКоличество участников: ${message.guild.memberCount}`);
+      message.channel.send(`Название сервера: ${message.guild.name}\nКоличество участников: ${message.guild.memberCount}\n${serverInfo}`);
     }
     catch {
       message.channel.send('Это не сервер :(');
