@@ -1,11 +1,12 @@
 const Discord = require('discord.js');
-const client = new Discord.Client();
+//const fs = require('fs');
 const ytdl = require('ytdl-core');
 const Canvas = require('canvas');
 const Pokedex = require('pokedex');
 const { createCanvas } = require('canvas');
 const { token, prefix, news, welcomeChannel, backgroundWelcomeImageName } = require('./config.json');
 
+const client = new Discord.Client();
 const canvas = createCanvas(500, 500);
 const ctx = canvas.getContext('2d');
 pokedex = new Pokedex();
@@ -95,31 +96,8 @@ client.on('message', message => {
   } else if (command === 'pokedex') {
     let pokemonName;
     let pokemonImage;
-    try {
-      pokemonName = pokedex.pokemon(args[0].toLowerCase()).name;
-      if (pokedex.pokemon(pokemonName).sprites.animated === undefined) {
-        pokemonImage = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${pokedex.pokemon(pokemonName).id}.png`
-      } else {
-        pokemonImage = pokedex.pokemon(pokemonName).sprites.animated;
-      }
-      const Embed = new Discord.MessageEmbed()
-        .setColor('#92ff8c')
-        .setTitle(`Имя: ${pokemonName}`)
-        .setDescription('Покемон')
-        .setThumbnail(pokemonImage)
-        .addFields(
-          { name: 'Номер', value: pokedex.pokemon(pokemonName).id },
-          { name: 'Рост', value: pokedex.pokemon(pokemonName).height },
-          { name: 'Вес', value: pokedex.pokemon(pokemonName).weight }
-        )
-        .setTimestamp()
-        .setFooter(client.user.tag, client.user.displayAvatarURL({ dynamic: true }));
-
-      message.channel.send(Embed);
-    } catch {
       try {
-        pokemonName = pokedex.pokemon(Number(args[0])).name;
-        pokemonImage;
+        pokemonName = pokedex.pokemon(args[0].toLowerCase()).name;
         if (pokedex.pokemon(pokemonName).sprites.animated === undefined) {
           pokemonImage = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${pokedex.pokemon(pokemonName).id}.png`
         } else {
@@ -139,11 +117,54 @@ client.on('message', message => {
           .setFooter(client.user.tag, client.user.displayAvatarURL({ dynamic: true }));
 
         message.channel.send(Embed);
-      } catch{
-        message.channel.send('Ошибка: покемон не найден');
+      } catch {
+        try {
+          pokemonName = pokedex.pokemon(Number(args[0])).name;
+          pokemonImage;
+          if (pokedex.pokemon(pokemonName).sprites.animated === undefined) {
+            pokemonImage = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${pokedex.pokemon(pokemonName).id}.png`
+          } else {
+            pokemonImage = pokedex.pokemon(pokemonName).sprites.animated;
+          }
+          const Embed = new Discord.MessageEmbed()
+            .setColor('#92ff8c')
+            .setTitle(`Имя: ${pokemonName}`)
+            .setDescription('Покемон')
+            .setThumbnail(pokemonImage)
+            .addFields(
+              { name: 'Номер', value: pokedex.pokemon(pokemonName).id },
+              { name: 'Рост', value: pokedex.pokemon(pokemonName).height },
+              { name: 'Вес', value: pokedex.pokemon(pokemonName).weight }
+            )
+            .setTimestamp()
+            .setFooter(client.user.tag, client.user.displayAvatarURL({ dynamic: true }));
+
+          message.channel.send(Embed);
+        } catch{
+          message.channel.send('Ошибка: покемон не найден');
+        }
+      }
+  }/* else if (command === 'pokecord') {
+    try {
+      let { inventory, pokemons, pokedex } = require(`./pokecordUserData/${message.author.username}.json`);
+      if (args[0] === 'inventory') {
+        message.channel.send(JSON.stringify(inventory));
+      } else if (args[0] === 'pokemons') {
+        message.channel.send(JSON.stringify(pokemons));
+      } else if (args[0] === 'pokedex') {
+        message.channel.send(JSON.stringify(pokedex));
+      }
+    } catch{
+      fs.writeFileSync(`pokecordUserData/${message.author.username}.json`, fs.readFile('pokecordData/defaultUserData.json'));
+      if (args[0] === 'inventory') {
+        message.channel.send(JSON.stringify(inventory));
+      } else if (args[0] === 'pokemons') {
+        message.channel.send(JSON.stringify(pokemons));
+      } else if (args[0] === 'pokedex') {
+        message.channel.send(JSON.stringify(pokedex));
       }
     }
-  } else if (command === 'join') {
+  }*/ else if (command === 'join') {
     client.emit('guildMemberAdd', message.member);    
   } 
 });
