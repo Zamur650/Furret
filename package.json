@@ -14,8 +14,11 @@
   "dependencies": {
     "avconv": "^3.1.0",
     "canvas": "^2.6.1",
+    "currency": "^4.1.0",
+    "currency-codes": "^2.1.0",
     "discord.js": "^12.2.0",
     "ffmpeg": "0.0.4",
+    "money": "^0.2.0",
     "opusscript": "0.0.7",
     "pokedex": "^1.1.0",
     "ytdl-core": "^3.2.1"
