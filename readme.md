@@ -13,6 +13,8 @@
   * [backgroundWelcomeImageName](https://github.com/Zamur650/Furret#backgroundwelcomeimagename)
 * [Dependencies](https://github.com/Zamur650/Furret#dependencies)
 * [Install](https://github.com/Zamur650/Furret#install)
+## About
+This bot made on [Discord.js](https://github.com/discordjs/discord.js) by Zamur650
 ## Files
 1. [index.js](index.js) - main file
 2. [config.json](config.json) - config file
@@ -21,8 +23,6 @@
 5. [package.json](package.json)/[package-lock.json](package-lock.json) - npm info files
 6. [ffmpeg.exe](ffmpeg.exe)/[ffplay.exe](ffplay.exe)/[ffprobe.exe](ffprobe.exe) - ffmpeg for music (windows)
 5. [botIcon.png](botIcon.png)/[wallpaper.png](wallpaper.png) - images for bot
-## About
-This bot made on [Discord.js](https://github.com/discordjs/discord.js) by Zamur650
 ## Functions
 prefix + help - Displays this message
 
