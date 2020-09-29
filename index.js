@@ -30,7 +30,23 @@ client.on('message', message => {
   const command = args.shift().toLowerCase();
 
   if (command === 'help') {
-    message.channel.send(`\`\`\`${prefix}help - Выводит это сообщение\n${prefix}hi - Поздороваться\n${prefix}server - Информация о сервере\n${prefix}me - Узнать информацию о себе\n${prefix}news - Новости\n${prefix}password - Генерация паролей\n${prefix}music (ссылка) - воспроизведение музыки с YouTube (в разработке)\n${prefix}color (цвет) - вывести цвет в формате hex (#ffffff) или rgb (rgb(0,0,0)) без пробелов или random (случайный цвет в формате hex (#ffffff))\`\`\``)
+    message.channel.send(`\`\`\`${prefix}help - Выводит это сообщение\n${prefix}hi - Поздороваться\n${prefix}server - Информация о сервере\n${prefix}me - Узнать информацию о себе\n${prefix}news - Новости\n${prefix}password - Генерация паролей\n${prefix}music (ссылка) - воспроизведение музыки с YouTube (в разработке)\n${prefix}color (цвет) - вывести цвет в формате hex (#ffffff) или rgb (rgb(0,0,0)) без пробелов или random (случайный цвет в формате hex (#ffffff)\n${prefix}pokedex или ${prefix}pokemon + (имя) или (id) покемона - узнать информацию о покемоне)\`\`\``);
+  } else if (command === 'hi') {
+    message.channel.send('Здраствуйте. Это группа клана worst на сервере v2v на данный момент мы занимаем 2 место в топе кланов.
+Правила которые нельзя нарушать:
+      1. Оскорблять участников клана на сервере или в группе клана за исключением грубого чата
+1.1 Писать вещи с пометкой 16 + за исключением грубого чата
+1.2 Кидать в группу или на сервер вредоносные и содержащие вещи 16 + файлы и ссылки.
+1.3 Отправлять фото, видео и скрины непристойного и грубого характера в чаты за исключением грубого чата
+1.4 Угрожать семье / родным / близким, угрожать жизни и здоровью участников клана и канала в любых чатах
+2 Гриферить базы, сливать координаты баз и вещей в сеть.
+2.1 Шпионить координаты другим кланам / красть ресурсы участников клана.
+2.2 Сливать в сеть фото, скрины, видио с координатами в сеть
+2.3 Продавать / отдавать / передавать ресурсы клана игрокам в других кланах / игрокам без клана.
+3а Создавать клоны клана на сервере v2v или на других серверах.
+3b Создавать клоны клана в других играх.
+3.1 Создавать фейковые аккаунты под ником какого - либо участника клана / главы клана.
+Информация координат и т.д.передается ТОЛЬКО через дс.');
   } else if (command === 'hi') {
     message.channel.send('Привет');
   } else if (command === 'server') {
@@ -72,7 +88,7 @@ client.on('message', message => {
       password += charset.charAt(Math.floor(Math.random() * n));
     }
     message.channel.send(`Пароль: ${password}`);
-  } else if (command === 'color') {    
+  } else if (command === 'color') {
     let colorHex = args[0];
     if (colorHex === 'random') {
       colorHex = '#';
@@ -93,11 +109,34 @@ client.on('message', message => {
     ctx.fillText(colorHex, 250, 300);
     const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'ColorHexSend.png');
     message.channel.send(colorHex, attachment);
-  } else if (command === 'pokedex') {
+  } else if ( command === 'pokedex' || command === 'pokemon' ) {
     let pokemonName;
     let pokemonImage;
+    try {
+      pokemonName = pokedex.pokemon(args[0].toLowerCase()).name;
+      if (pokedex.pokemon(pokemonName).sprites.animated === undefined) {
+        pokemonImage = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${pokedex.pokemon(pokemonName).id}.png`
+      } else {
+        pokemonImage = pokedex.pokemon(pokemonName).sprites.animated;
+      }
+      const Embed = new Discord.MessageEmbed()
+        .setColor('#92ff8c')
+        .setTitle(`Имя: ${pokemonName}`)
+        .setDescription('Покемон')
+        .setThumbnail(pokemonImage)
+        .addFields(
+          { name: 'Номер', value: pokedex.pokemon(pokemonName).id },
+          { name: 'Рост', value: pokedex.pokemon(pokemonName).height },
+          { name: 'Вес', value: pokedex.pokemon(pokemonName).weight }
+        )
+        .setTimestamp()
+        .setFooter(client.user.tag, client.user.displayAvatarURL({ dynamic: true }));
+
+      message.channel.send(Embed);
+    } catch {
       try {
-        pokemonName = pokedex.pokemon(args[0].toLowerCase()).name;
+        pokemonName = pokedex.pokemon(Number(args[0])).name;
+        pokemonImage;
         if (pokedex.pokemon(pokemonName).sprites.animated === undefined) {
           pokemonImage = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${pokedex.pokemon(pokemonName).id}.png`
         } else {
@@ -117,33 +156,10 @@ client.on('message', message => {
           .setFooter(client.user.tag, client.user.displayAvatarURL({ dynamic: true }));
 
         message.channel.send(Embed);
-      } catch {
-        try {
-          pokemonName = pokedex.pokemon(Number(args[0])).name;
-          pokemonImage;
-          if (pokedex.pokemon(pokemonName).sprites.animated === undefined) {
-            pokemonImage = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${pokedex.pokemon(pokemonName).id}.png`
-          } else {
-            pokemonImage = pokedex.pokemon(pokemonName).sprites.animated;
-          }
-          const Embed = new Discord.MessageEmbed()
-            .setColor('#92ff8c')
-            .setTitle(`Имя: ${pokemonName}`)
-            .setDescription('Покемон')
-            .setThumbnail(pokemonImage)
-            .addFields(
-              { name: 'Номер', value: pokedex.pokemon(pokemonName).id },
-              { name: 'Рост', value: pokedex.pokemon(pokemonName).height },
-              { name: 'Вес', value: pokedex.pokemon(pokemonName).weight }
-            )
-            .setTimestamp()
-            .setFooter(client.user.tag, client.user.displayAvatarURL({ dynamic: true }));
-
-          message.channel.send(Embed);
-        } catch{
-          message.channel.send('Ошибка: покемон не найден');
-        }
+      } catch{
+        message.channel.send('Ошибка: покемон не найден');
       }
+    }
   }/* else if (command === 'pokecord') {
     try {
       let { inventory, pokemons, pokedex } = require(`./pokecordUserData/${message.author.username}.json`);
@@ -165,11 +181,11 @@ client.on('message', message => {
       }
     }
   }*/ else if (command === 'join') {
-    client.emit('guildMemberAdd', message.member);    
-  } 
+    client.emit('guildMemberAdd', message.member);
+  }
 });
 
-client.on('message', async message => {  
+client.on('message', async message => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
   const args = message.content.slice(prefix.length).trim().split(/ +/);
