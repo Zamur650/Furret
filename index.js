@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-//const fs = require('fs');
 const ytdl = require('ytdl-core');
 const Canvas = require('canvas');
 const Pokedex = require('pokedex');
@@ -12,46 +11,34 @@ const ctx = canvas.getContext('2d');
 pokedex = new Pokedex();
 let charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 let hexCharset = 'ABCDEF0123456789';
+let inviteUrl;
 
 client.once('ready', () => {
   console.log(`Захожу как ${client.user.tag}!`);
+  client.user.setActivity(`${prefix}help`);
+  client.generateInvite(["ADMINISTRATOR"]).then(link => {
+    inviteUrl = link;
+  });
 });
+
 client.once('reconnecting', () => {
   console.log(`Перезахожу как ${client.user.tag}!`);
 });
+
 client.once('disconnect', () => {
   console.log(`Выхожу как ${client.user.tag}!`);
 });
 
 client.on('message', message => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
-
   const args = message.content.slice(prefix.length).trim().split(/ +/);
   const command = args.shift().toLowerCase();
 
   if (command === 'help') {
-    message.channel.send(`\`\`\`${prefix}help - Выводит это сообщение\n${prefix}hi - Поздороваться\n${prefix}server - Информация о сервере\n${prefix}me - Узнать информацию о себе\n${prefix}news - Новости\n${prefix}password - Генерация паролей\n${prefix}music (ссылка) - воспроизведение музыки с YouTube (в разработке)\n${prefix}color (цвет) - вывести цвет в формате hex (#ffffff) или rgb (rgb(0,0,0)) без пробелов или random (случайный цвет в формате hex (#ffffff)\n${prefix}pokedex или ${prefix}pokemon + (имя) или (id) покемона - узнать информацию о покемоне)\`\`\``);
-  } else if (command === 'hi') {
-    message.channel.send('Здраствуйте. Это группа клана worst на сервере v2v на данный момент мы занимаем 2 место в топе кланов.
-Правила которые нельзя нарушать:
-      1. Оскорблять участников клана на сервере или в группе клана за исключением грубого чата
-1.1 Писать вещи с пометкой 16 + за исключением грубого чата
-1.2 Кидать в группу или на сервер вредоносные и содержащие вещи 16 + файлы и ссылки.
-1.3 Отправлять фото, видео и скрины непристойного и грубого характера в чаты за исключением грубого чата
-1.4 Угрожать семье / родным / близким, угрожать жизни и здоровью участников клана и канала в любых чатах
-2 Гриферить базы, сливать координаты баз и вещей в сеть.
-2.1 Шпионить координаты другим кланам / красть ресурсы участников клана.
-2.2 Сливать в сеть фото, скрины, видио с координатами в сеть
-2.3 Продавать / отдавать / передавать ресурсы клана игрокам в других кланах / игрокам без клана.
-3а Создавать клоны клана на сервере v2v или на других серверах.
-3b Создавать клоны клана в других играх.
-3.1 Создавать фейковые аккаунты под ником какого - либо участника клана / главы клана.
-Информация координат и т.д.передается ТОЛЬКО через дс.');
-  } else if (command === 'hi') {
-    message.channel.send('Привет');
+    message.channel.send(`:page_with_curl:  Помощь: \`\`\`${prefix}help - Выводит это сообщение\n${prefix}hi - Поздороваться\n${prefix}server - Информация о сервере\n${prefix}me - Узнать информацию о себе\n${prefix}news - Новости\n${prefix}password - Генерация паролей\n${prefix}music (ссылка) - воспроизведение музыки с YouTube\n${prefix}color (цвет) - вывести цвет в формате hex (#ffffff) или rgb (rgb(0,0,0)) без пробелов или random (случайный цвет в формате hex (#ffffff)\n${prefix}pokedex или ${prefix}pokemon + (имя) или (id) покемона - узнать информацию о покемоне)\n${prefix}invite - пригласить бота на сервер\n${prefix}coin - подбросить монету\n${prefix}clear (число до 100) - очистка сообщений\`\`\``);
   } else if (command === 'server') {
     try {
-      message.channel.send(`Название сервера: ${message.guild.name}\nКоличество участников: ${message.guild.memberCount}`);
+      message.channel.send(`Название сервера: ${message.guild.name}\nКоличество участников: ${message.guild.memberCount} :page_with_curl:`);
     }
     catch {
       message.channel.send('Это не сервер :(');
@@ -59,6 +46,21 @@ client.on('message', message => {
   } else if (command === 'me') {
     try {
       let channelEmbed = message.member.voice.channel;
+      let status = message.author.presence.status;
+      switch (status) {
+        case 'online':
+          status = ':green_circle: В сети';
+          break;
+        case 'idle':
+          status = ':crescent_moon: Не активен';
+          break;
+        case 'dnd':
+          status = ':red_circle: Не беспокоить';
+          break;
+        case 'offline':
+          status = ':black_circle: Не в сети';
+          break;
+      }
       if (channelEmbed === null) {
         channelEmbed = 'Не в канале';
       }
@@ -70,24 +72,22 @@ client.on('message', message => {
         .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
         .addFields(
           { name: 'Канал', value: channelEmbed },
+          { name: 'Статус', value: status },
           { name: 'Id', value: message.author.id }
         )
-        .setTimestamp()
-        .setFooter(client.user.tag, client.user.displayAvatarURL({ dynamic: true }));
-
       message.channel.send(Embed);
     }
     catch {
-      message.channel.send('Это не сервер :(');
+      message.channel.send('Это не сервер!');
     }
   } else if (command === 'news') {
-    message.channel.send(`Новости: ${news}`);
+    message.channel.send(`Новости: ${news} :loudspeaker:`);
   } else if (command === 'password') {
     let password = "";
     for (let i = 0, n = charset.length; i < 8; ++i) {
       password += charset.charAt(Math.floor(Math.random() * n));
     }
-    message.channel.send(`Пароль: ${password}`);
+    message.channel.send(`Пароль: ||${password}|| :keyboard:`);
   } else if (command === 'color') {
     let colorHex = args[0];
     if (colorHex === 'random') {
@@ -109,7 +109,7 @@ client.on('message', message => {
     ctx.fillText(colorHex, 250, 300);
     const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'ColorHexSend.png');
     message.channel.send(colorHex, attachment);
-  } else if ( command === 'pokedex' || command === 'pokemon' ) {
+  } else if (command === 'pokedex' || command === 'pokemon') {
     let pokemonName;
     let pokemonImage;
     try {
@@ -156,32 +156,39 @@ client.on('message', message => {
           .setFooter(client.user.tag, client.user.displayAvatarURL({ dynamic: true }));
 
         message.channel.send(Embed);
-      } catch{
+      } catch {
         message.channel.send('Ошибка: покемон не найден');
       }
     }
-  }/* else if (command === 'pokecord') {
-    try {
-      let { inventory, pokemons, pokedex } = require(`./pokecordUserData/${message.author.username}.json`);
-      if (args[0] === 'inventory') {
-        message.channel.send(JSON.stringify(inventory));
-      } else if (args[0] === 'pokemons') {
-        message.channel.send(JSON.stringify(pokemons));
-      } else if (args[0] === 'pokedex') {
-        message.channel.send(JSON.stringify(pokedex));
-      }
-    } catch{
-      fs.writeFileSync(`pokecordUserData/${message.author.username}.json`, fs.readFile('pokecordData/defaultUserData.json'));
-      if (args[0] === 'inventory') {
-        message.channel.send(JSON.stringify(inventory));
-      } else if (args[0] === 'pokemons') {
-        message.channel.send(JSON.stringify(pokemons));
-      } else if (args[0] === 'pokedex') {
-        message.channel.send(JSON.stringify(pokedex));
-      }
-    }
-  }*/ else if (command === 'join') {
+  } else if (command === 'join') {
     client.emit('guildMemberAdd', message.member);
+  } else if (command === 'invite') {
+    message.channel.send(`Ссылка-приглашение: ${inviteUrl}`)
+  } else if (command === 'coin') {
+    message.channel.send('Монета подбрасывается...')
+    var random = Math.floor(Math.random() * 3);
+    if (random === 1) {
+      message.channel.send(':eagle: Орёл!')
+    } else if (random === 2) { 
+      message.channel.send(':coin: Решка!')
+    }
+  } else if (command === 'clear') {
+    let amount = args[0];
+    if (!amount) return message.channel.send('Вы не указали, сколько сообщений нужно удалить! :no_entry_sign:');
+    if (isNaN(amount)) return message.channel.send('Это не число!');
+
+    if (amount > 100) return message.channel.send('Вы не можете удалить 100 сообщений за раз! :no_entry_sign:');
+    if (amount < 1) return message.channel.send('Вы должны ввести число больше чем 1! :no_entry_sign:');
+
+    async function delete_messages() { 
+      await message.channel.messages.fetch({
+        limit: amount
+      }).then(messages => {
+        message.channel.bulkDelete(messages)
+        message.channel.send(`Удалено ${amount} сообщений! :wastebasket:`)
+      })
+    };
+    delete_messages();
   }
 });
 
