@@ -38,7 +38,7 @@ client.on('message', message => {
     message.channel.send(`:page_with_curl:  Помощь: \`\`\`${prefix}help - Выводит это сообщение\n${prefix}hi - Поздороваться\n${prefix}server - Информация о сервере\n${prefix}me - Узнать информацию о себе\n${prefix}news - Новости\n${prefix}password - Генерация паролей\n${prefix}music (ссылка) - воспроизведение музыки с YouTube\n${prefix}color (цвет) - вывести цвет в формате hex (#ffffff) или rgb (rgb(0,0,0)) без пробелов или random (случайный цвет в формате hex (#ffffff)\n${prefix}pokedex или ${prefix}pokemon + (имя) или (id) покемона - узнать информацию о покемоне)\n${prefix}invite - пригласить бота на сервер\n${prefix}coin - подбросить монету\n${prefix}clear (число до 100) - очистка сообщений\`\`\``);
   } else if (command === 'server') {
     try {
-      message.channel.send(`Название сервера: ${message.guild.name}\nКоличество участников: ${message.guild.memberCount} :page_with_curl:`);
+      message.channel.send(`:page_with_curl: Название сервера: ${message.guild.name}\nКоличество участников: ${message.guild.memberCount}`);
     }
     catch {
       message.channel.send('Это не сервер :(');
