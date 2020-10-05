@@ -1,7 +1,8 @@
 {
   "token": "NjYyNTMzNjg1NTg0ODU1MDUw.Xg7Wkw.8msqJrbgL1tTvdir0K7DMfGpVuU",
   "prefix": "$",
-  "news": "pokemon update",
-  "welcomeChannel": "приветствуем",
-  "backgroundWelcomeImageName": "wallpaper.png"
+  "news": "$me update",
+  "welcomeChannel": "пришли-ушли",
+  "backgroundWelcomeImageName": "wallpaper.png",
+  "inviteUrl": "https://discord.com/oauth2/authorize?client_id=662533685584855050&scope=bot&permissions=8"
 }
