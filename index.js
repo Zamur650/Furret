@@ -41,7 +41,7 @@ client.on('message', message => {
   const command = args.shift().toLowerCase();
 
   if (command === 'help') {
-    message.channel.send(`:page_with_curl: Помощь: \`\`\`${prefix}help - Выводит это сообщение\n${prefix}hi - Поздороваться\n${prefix}server - Информация о сервере\n${prefix}me - Узнать информацию о себе\n${prefix}news - Новости\n${prefix}password - Генерация паролей\n${prefix}music (ссылка) - воспроизведение музыки с YouTube\n${prefix}color (цвет) - вывести цвет в формате hex (#ffffff) или rgb (rgb(0,0,0)) без пробелов или random (случайный цвет в формате hex (#ffffff)\n${prefix}pokedex или ${prefix}pokemon + (имя) или (id) покемона - узнать информацию о покемоне)\n${prefix}invite - пригласить бота на сервер\n${prefix}coin - подбросить монету\n${prefix}clear (число до 100) - очистка сообщений\`\`\``);
+    message.channel.send(`:page_with_curl: Помощь: \`\`\`${prefix}help - Выводит это сообщение\n${prefix}hi - Поздороваться\n${prefix}server - Информация о сервере\n${prefix}me - Узнать информацию о себе\n${prefix}password - Генерация паролей\n${prefix}music (ссылка) - воспроизведение музыки с YouTube\n${prefix}color (цвет) - вывести цвет в формате hex (#ffffff) или rgb (rgb(0,0,0)) без пробелов или random (случайный цвет в формате hex (#ffffff)\n${prefix}pokedex или ${prefix}pokemon + (имя) или (id) покемона - узнать информацию о покемоне)\n${prefix}invite - пригласить бота на сервер\n${prefix}coin - подбросить монету\n${prefix}clear (число до 100) - очистка сообщений\`\`\``);
   } else if (command === 'server') {
     try {
       message.channel.send(`:page_with_curl: Название сервера: ${message.guild.name}\nКоличество участников: ${message.guild.memberCount}`);
@@ -86,8 +86,6 @@ client.on('message', message => {
     catch {
       message.channel.send('Это не сервер!');
     }
-  } else if (command === 'news') {
-    message.channel.send(`Новости: ${news} :loudspeaker:`);
   } else if (command === 'password') {
     let password = "";
     for (let i = 0, n = charset.length; i < 8; ++i) {
@@ -175,7 +173,7 @@ client.on('message', message => {
     var random = Math.floor(Math.random() * 3);
     if (random === 1) {
       message.channel.send(':eagle: Орёл!')
-    } else if (random === 2) { 
+    } else if (random === 2) {
       message.channel.send(':coin: Решка!')
     }
   } else if (command === 'clear') {
@@ -186,7 +184,7 @@ client.on('message', message => {
     if (amount > 100) return message.channel.send('Вы не можете удалить 100 сообщений за раз! :no_entry_sign:');
     if (amount < 1) return message.channel.send('Вы должны ввести число больше чем 1! :no_entry_sign:');
 
-    async function delete_messages() { 
+    async function delete_messages() {
       await message.channel.messages.fetch({
         limit: amount
       }).then(messages => {
