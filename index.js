@@ -2,6 +2,8 @@ const Discord = require('discord.js');
 const ytdl = require('ytdl-core');
 const Canvas = require('canvas');
 const Pokedex = require('pokedex');
+const ytsr = require('ytsr');
+
 const { createCanvas } = require('canvas');
 const { token, prefix, news, welcomeChannel, backgroundWelcomeImageName } = require('./config.json');
 
@@ -12,6 +14,7 @@ pokedex = new Pokedex();
 let charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 let hexCharset = 'ABCDEF0123456789';
 let inviteUrl;
+let filter;
 
 client.once('ready', () => {
   console.log(`Захожу как ${client.user.tag}!`);
@@ -30,12 +33,15 @@ client.once('disconnect', () => {
 });
 
 client.on('message', message => {
+  var now = new Date();
+  console.log(`${now}, ${message.author.username}: ${message.content}`);
+
   if (!message.content.startsWith(prefix) || message.author.bot) return;
   const args = message.content.slice(prefix.length).trim().split(/ +/);
   const command = args.shift().toLowerCase();
 
   if (command === 'help') {
-    message.channel.send(`:page_with_curl:  Помощь: \`\`\`${prefix}help - Выводит это сообщение\n${prefix}hi - Поздороваться\n${prefix}server - Информация о сервере\n${prefix}me - Узнать информацию о себе\n${prefix}news - Новости\n${prefix}password - Генерация паролей\n${prefix}music (ссылка) - воспроизведение музыки с YouTube\n${prefix}color (цвет) - вывести цвет в формате hex (#ffffff) или rgb (rgb(0,0,0)) без пробелов или random (случайный цвет в формате hex (#ffffff)\n${prefix}pokedex или ${prefix}pokemon + (имя) или (id) покемона - узнать информацию о покемоне)\n${prefix}invite - пригласить бота на сервер\n${prefix}coin - подбросить монету\n${prefix}clear (число до 100) - очистка сообщений\`\`\``);
+    message.channel.send(`:page_with_curl: Помощь: \`\`\`${prefix}help - Выводит это сообщение\n${prefix}hi - Поздороваться\n${prefix}server - Информация о сервере\n${prefix}me - Узнать информацию о себе\n${prefix}news - Новости\n${prefix}password - Генерация паролей\n${prefix}music (ссылка) - воспроизведение музыки с YouTube\n${prefix}color (цвет) - вывести цвет в формате hex (#ffffff) или rgb (rgb(0,0,0)) без пробелов или random (случайный цвет в формате hex (#ffffff)\n${prefix}pokedex или ${prefix}pokemon + (имя) или (id) покемона - узнать информацию о покемоне)\n${prefix}invite - пригласить бота на сервер\n${prefix}coin - подбросить монету\n${prefix}clear (число до 100) - очистка сообщений\`\`\``);
   } else if (command === 'server') {
     try {
       message.channel.send(`:page_with_curl: Название сервера: ${message.guild.name}\nКоличество участников: ${message.guild.memberCount}`);
