@@ -18,18 +18,22 @@ let filter;
 
 client.once('ready', () => {
   console.log(`Захожу как ${client.user.tag}!`);
-  client.user.setActivity(`${prefix}help`);
+  client.user.setActivity(`${prefix}help - help`);
   client.generateInvite(["ADMINISTRATOR"]).then(link => {
     inviteUrl = link;
   });
 });
 
 client.once('reconnecting', () => {
-  console.log(`Перезахожу как ${client.user.tag}!`);
+  console.log(`Перезашёл как ${client.user.tag}!`);
+  client.user.setActivity(`${prefix}help - help`);
+  client.generateInvite(["ADMINISTRATOR"]).then(link => {
+    inviteUrl = link;
+  });
 });
 
 client.once('disconnect', () => {
-  console.log(`Выхожу как ${client.user.tag}!`);
+  console.log(`Отключился как ${client.user.tag}!`);
 });
 
 client.on('message', message => {
@@ -41,7 +45,7 @@ client.on('message', message => {
   const command = args.shift().toLowerCase();
 
   if (command === 'help') {
-    message.channel.send(`:page_with_curl: Помощь: \`\`\`${prefix}help - Выводит это сообщение\n${prefix}hi - Поздороваться\n${prefix}server - Информация о сервере\n${prefix}me - Узнать информацию о себе\n${prefix}password - Генерация паролей\n${prefix}music (ссылка) - воспроизведение музыки с YouTube\n${prefix}color (цвет) - вывести цвет в формате hex (#ffffff) или rgb (rgb(0,0,0)) без пробелов или random (случайный цвет в формате hex (#ffffff)\n${prefix}pokedex или ${prefix}pokemon + (имя) или (id) покемона - узнать информацию о покемоне)\n${prefix}invite - пригласить бота на сервер\n${prefix}coin - подбросить монету\n${prefix}clear (число до 100) - очистка сообщений\`\`\``);
+    message.channel.send(`:page_with_curl: Помощь: \`\`\`${prefix}help -  Выводит это сообщение\n${prefix}hi - Поздороваться\n${prefix}server - Информация о сервере\n${prefix}me - Узнать информацию о себе\n${prefix}password - Генерация паролей\n${prefix}music (ссылка) - воспроизведение музыки с YouTube\n${prefix}color (цвет) - вывести цвет в формате hex (#ffffff) или rgb (rgb(0,0,0)) без пробелов или random (случайный цвет в формате hex (#ffffff)\n${prefix}pokedex или ${prefix}pokemon + (имя) или (id) покемона - узнать информацию о покемоне)\n${prefix}invite - пригласить бота на сервер\n${prefix}coin - подбросить монету\n${prefix}clear (число до 100) - очистка сообщений\`\`\``);
   } else if (command === 'server') {
     try {
       message.channel.send(`:page_with_curl: Название сервера: ${message.guild.name}\nКоличество участников: ${message.guild.memberCount}`);
@@ -87,7 +91,7 @@ client.on('message', message => {
       message.channel.send('Это не сервер!');
     }
   } else if (command === 'password') {
-    let password = "";
+    let password = '';
     for (let i = 0, n = charset.length; i < 8; ++i) {
       password += charset.charAt(Math.floor(Math.random() * n));
     }
