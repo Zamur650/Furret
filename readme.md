@@ -16,29 +16,15 @@
 ## About
 This bot made on [Discord.js](https://github.com/discordjs/discord.js) by Zamur650
 ## Files
-1. [index.js](index.js) - main file
-2. [config.json](config.json) - config file
-3. [readme.md](readme.md) - this file
-4. [start.bat](start.bat)/[start.bash](start.bash) - start bat/bash files
-5. [package.json](package.json)/[package-lock.json](package-lock.json) - npm info files
-6. [ffmpeg.exe](ffmpeg.exe)/[ffplay.exe](ffplay.exe)/[ffprobe.exe](ffprobe.exe) - ffmpeg for music (windows)
-5. [botIcon.png](botIcon.png)/[wallpaper.png](wallpaper.png) - images for bot
+1. [index.js](index.js)
+2. [config.json](config.json)
+3. [readme.md](readme.md)
+4. [start.bat](start.bat)/[start.bash](start.bash)
+5. [package.json](package.json)/[package-lock.json](package-lock.json)
+6. [ffmpeg.exe](ffmpeg.exe)/[ffplay.exe](ffplay.exe)/[ffprobe.exe](ffprobe.exe)
+5. [botIcon.png](botIcon.png)/[wallpaper.png](wallpaper.png)
 ## Functions
-prefix + help - Displays this message
 
-prefix + hi - Say hello
-
-prefix + server - Server information
-
-prefix + me - Get information about yourself
-
-prefix + news - News
-
-prefix + password - Generate passwords
-
-prefix + music (link) - play music from YouTube (in development)
-
-prefix + color (color) - display the color in hex (#ffffff) or rgb (rgb (0,0,0)) no spaces or random (random color in hex (#ffffff) format)
 
 prefix + pokedex (name or id of pokemon) - display information about pokemon
 ## Config.json guide

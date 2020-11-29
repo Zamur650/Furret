@@ -2,7 +2,9 @@ const Discord = require('discord.js');
 const ytdl = require('ytdl-core');
 const Canvas = require('canvas');
 const Pokedex = require('pokedex');
-const ytsr = require('ytsr');
+const http = require("http");
+const fs = require("fs");
+//const ytsr = require('ytsr');
 
 const { createCanvas } = require('canvas');
 const { token, prefix, news, welcomeChannel, backgroundWelcomeImageName } = require('./config.json');
@@ -14,10 +16,9 @@ pokedex = new Pokedex();
 let charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 let hexCharset = 'ABCDEF0123456789';
 let inviteUrl;
-let filter;
 
 client.once('ready', () => {
-  console.log(`Захожу как ${client.user.tag}!`);
+  console.log(`Захожу как: ${client.user.tag}!`);
   client.user.setActivity(`${prefix}help - help`);
   client.generateInvite(["ADMINISTRATOR"]).then(link => {
     inviteUrl = link;
@@ -25,7 +26,7 @@ client.once('ready', () => {
 });
 
 client.once('reconnecting', () => {
-  console.log(`Перезашёл как ${client.user.tag}!`);
+  console.log(`Перезашёл как: ${client.user.tag}!`);
   client.user.setActivity(`${prefix}help - help`);
   client.generateInvite(["ADMINISTRATOR"]).then(link => {
     inviteUrl = link;
@@ -39,6 +40,9 @@ client.once('disconnect', () => {
 client.on('message', message => {
   var now = new Date();
   console.log(`${now}, ${message.author.username}: ${message.content}`);
+  fs.appendFile("logs.log", `${now}, ${message.author.username}: ${message.content}\n`, function (error) {
+    if (error) console.log(error);
+  });
 
   if (!message.content.startsWith(prefix) || message.author.bot) return;
   const args = message.content.slice(prefix.length).trim().split(/ +/);
