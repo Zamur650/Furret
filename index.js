@@ -39,8 +39,8 @@ client.once('disconnect', () => {
 
 client.on('message', message => {
   var now = new Date();
-  console.log(`${now}, ${message.author.username}: ${message.content}`);
-  fs.appendFile("logs.log", `${now}, ${message.author.username}: ${message.content}\n`, function (error) {
+  console.log(`${now}, ${message.guild.name}, ${message.author.username}: ${message.content}`);
+  fs.appendFile("logs.log", `${now}, ${message.guild.name}, ${message.author.username}: ${message.content}\n`, function (error) {
     if (error) console.log(error);
   });
 

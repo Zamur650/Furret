@@ -14,11 +14,11 @@
   "dependencies": {
     "avconv": "^3.1.0",
     "canvas": "^2.6.1",
-    "discord.js": "^12.2.0",
+    "discord.js": "^12.5.1",
     "ffmpeg": "0.0.4",
     "opusscript": "0.0.7",
     "pokedex": "^1.1.0",
-    "ytdl-core": "^3.2.1",
+    "ytdl-core": "^4.1.0",
     "ytsr": "^1.0.4"
   }
 }
