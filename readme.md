@@ -63,6 +63,6 @@ In console you need to write in cmd/bash
 
 After this you need to install [FFmpeg](https://ffmpeg.org/download.html)
 
-To start it you need to write node index.js
+To start it you need to write in console: `node index.js`
 
 Enjoy :D
