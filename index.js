@@ -2,12 +2,12 @@ const Discord = require('discord.js');
 const ytdl = require('ytdl-core');
 const Canvas = require('canvas');
 const Pokedex = require('pokedex');
-const http = require("http");
 const fs = require("fs");
-//const ytsr = require('ytsr');
+const ytsr = require('ytsr');
 
 const { createCanvas } = require('canvas');
 const { token, prefix, news, welcomeChannel, backgroundWelcomeImageName } = require('./config.json');
+const { exception } = require('console');
 
 const client = new Discord.Client();
 const canvas = createCanvas(500, 500);
@@ -16,6 +16,7 @@ pokedex = new Pokedex();
 let charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 let hexCharset = 'ABCDEF0123456789';
 let inviteUrl;
+let play = false;
 
 client.once('ready', () => {
   console.log(`Захожу как: ${client.user.tag}!`);
@@ -23,18 +24,6 @@ client.once('ready', () => {
   client.generateInvite(["ADMINISTRATOR"]).then(link => {
     inviteUrl = link;
   });
-});
-
-client.once('reconnecting', () => {
-  console.log(`Перезашёл как: ${client.user.tag}!`);
-  client.user.setActivity(`${prefix}help - help`);
-  client.generateInvite(["ADMINISTRATOR"]).then(link => {
-    inviteUrl = link;
-  });
-});
-
-client.once('disconnect', () => {
-  console.log(`Отключился как ${client.user.tag}!`);
 });
 
 client.on('message', message => {
@@ -79,7 +68,7 @@ client.on('message', message => {
         channelEmbed = 'Не в канале';
       }
       const Embed = new Discord.MessageEmbed()
-        .setColor('#92ff8c')
+        .setColor('#ffcc99')
         .setTitle(`Имя: ${message.author.username}`)
         .setURL()
         .setDescription(`Участник сервера: ${message.guild.name}`)
@@ -132,7 +121,7 @@ client.on('message', message => {
         pokemonImage = pokedex.pokemon(pokemonName).sprites.animated;
       }
       const Embed = new Discord.MessageEmbed()
-        .setColor('#92ff8c')
+        .setColor('#ffcc99')
         .setTitle(`Имя: ${pokemonName}`)
         .setDescription('Покемон')
         .setThumbnail(pokemonImage)
@@ -155,7 +144,7 @@ client.on('message', message => {
           pokemonImage = pokedex.pokemon(pokemonName).sprites.animated;
         }
         const Embed = new Discord.MessageEmbed()
-          .setColor('#92ff8c')
+          .setColor('#ffcc99')
           .setTitle(`Имя: ${pokemonName}`)
           .setDescription('Покемон')
           .setThumbnail(pokemonImage)
@@ -185,22 +174,26 @@ client.on('message', message => {
       message.channel.send(':coin: Решка!')
     }
   } else if (command === 'clear') {
-    let amount = args[0];
-    if (!amount) return message.channel.send('Вы не указали, сколько сообщений нужно удалить! :no_entry_sign:');
-    if (isNaN(amount)) return message.channel.send('Это не число!');
+    try {
+      let amount = args[0];
+      if (!amount) return message.channel.send('Вы не указали, сколько сообщений нужно удалить! :no_entry_sign:');
+      if (isNaN(amount)) return message.channel.send('Это не число!');
 
-    if (amount > 100) return message.channel.send('Вы не можете удалить 100 сообщений за раз! :no_entry_sign:');
-    if (amount < 1) return message.channel.send('Вы должны ввести число больше чем 1! :no_entry_sign:');
+      if (amount > 100) return message.channel.send('Вы не можете удалить 100 сообщений за раз! :no_entry_sign:');
+      if (amount < 1) return message.channel.send('Вы должны ввести число больше чем 1! :no_entry_sign:');
 
-    async function delete_messages() {
-      await message.channel.messages.fetch({
-        limit: amount
-      }).then(messages => {
-        message.channel.bulkDelete(messages)
-        message.channel.send(`Удалено ${amount} сообщений! :wastebasket:`)
-      })
-    };
-    delete_messages();
+      async function delete_messages() {
+        await message.channel.messages.fetch({
+          limit: amount
+        }).then(messages => {
+          message.channel.bulkDelete(messages)
+          message.channel.send(`Удалено ${amount} сообщений! :wastebasket:`)
+        })
+      };
+      delete_messages();
+    } catch {
+      message.channel.send(`Вы не можете удолять сообщения старше 2 недель. Попробуйте удолить сообщения помладше :no_entry_sign:`)
+    }
   }
 });
 
@@ -211,30 +204,53 @@ client.on('message', async message => {
   const command = args.shift().toLowerCase();
   if (command === 'music') {
     try {
-      if (args[0] != undefined) {
-        if (message.member.voice.channel) {
-          const connection = await message.member.voice.channel.join();
-          const dispatcher = await connection.play(ytdl(args[0], { type: 'opus' }));
+      if (play == false) {
+        if (args[0] !== undefined) {
+          if (message.member.voice.channel) {
+            play = true;
+            const connection = await message.member.voice.channel.join();
+            const dispatcher = await connection.play(ytdl(args[0], { type: 'opus' }));
 
-          dispatcher.on('start', () => {
-            message.channel.send(`Начинаю воспроизведение :musical_note:`)
-          });
+            dispatcher.on('start', () => {
+              message.channel.send(`Начинаю воспроизведение :musical_note:`);
+            });
 
-          dispatcher.on('finish', () => {
-            message.channel.send(`Воспроизведение завершено :musical_note:`)
-          });
-
-          dispatcher.on('error', console.error);
+            dispatcher.on('finish', () => {
+              if (play) {
+                message.channel.send(`Воспроизведение завершено :musical_note:`);
+                connection.disconnect();
+                play = false;
+              }
+            });
+            
+            dispatcher.on('error', console.error);
+          } else {
+            message.channel.send('Вы не в канале :no_entry_sign:');
+          }
         } else {
-          message.channel.send('Вы не в канале :no_entry_sign:')
+          message.channel.send('Вы не указали что мне играть :no_entry_sign:');
         }
       } else {
-        message.channel.send('Вы не указали что мне играть :no_entry_sign:')
+        message.channel.send('Сейчас играет музыка :no_entry_sign:');
       }
     } catch {
+      play = false;
       return;
     }
-  }
+  } else if (command === 'leave') {
+    try {
+      if (play) {
+        play = false;
+        const connection = await message.member.voice.channel.join();
+        connection.disconnect();
+        message.channel.send('Успешно вышел из канала! :door:');
+      } else {
+        message.channel.send('Невозможно выйти :no_entry_sign:');
+      }
+    } catch {
+      message.channel.send('Невозможно выйти :no_entry_sign:');
+    }
+   }
 });
 
 client.on('guildMemberAdd', async member => {
@@ -299,6 +315,23 @@ client.on('guildMemberRemove', async member => {
   const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'welcome-image.png');
 
   channel.send(attachment);
+});
+
+client.once('reconnecting', () => {
+  console.log(`Перезашёл как: ${client.user.tag}!`);
+  client.user.setActivity(`${prefix}help - help`);
+  client.generateInvite(["ADMINISTRATOR"]).then(link => {
+    inviteUrl = link;
+  });
+});
+
+client.once('disconnect', () => {
+  console.log(`Отключился как ${client.user.tag}!`);
+});
+
+
+client.on('guildMemberBoost', (member) => {
+  console.log(`${member.user.tag} сделал "буст" серверу ${member.guild.name}!`);
 });
 
 client.login(token);
