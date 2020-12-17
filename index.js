@@ -3,11 +3,11 @@ const ytdl = require('ytdl-core');
 const Canvas = require('canvas');
 const Pokedex = require('pokedex');
 const fs = require("fs");
-const ytsr = require('ytsr');
+//const ytsr = require('ytsr');
 
 const { createCanvas } = require('canvas');
-const { token, prefix, news, welcomeChannel, backgroundWelcomeImageName } = require('./config.json');
-const { exception } = require('console');
+const { token, prefix, welcomeChannel, backgroundWelcomeImageName } = require('./config.json');
+//const { exception } = require('console');
 
 const client = new Discord.Client();
 const canvas = createCanvas(500, 500);
