@@ -6,7 +6,7 @@ const fs = require("fs");
 //const ytsr = require('ytsr');
 
 const { createCanvas } = require('canvas');
-const { token, prefix, welcomeChannel, backgroundWelcomeImageName } = require('./config.json');
+const { token, prefix, welcomeChannel, backgroundWelcomeImageName, muteRoleName } = require('./config.json');
 //const { exception } = require('console');
 
 const client = new Discord.Client();
@@ -18,6 +18,9 @@ let hexCharset = 'ABCDEF0123456789';
 let inviteUrl;
 let play = false;
 
+const nekoLifeClient = require('nekos.life');
+const neko = new nekoLifeClient();
+
 client.once('ready', () => {
   console.log(`Захожу как: ${client.user.tag}!`);
   client.user.setActivity(`${prefix}help - help`);
@@ -26,19 +29,26 @@ client.once('ready', () => {
   });
 });
 
-client.on('message', message => {
+client.on('message', async message => {
   var now = new Date();
-  console.log(`${now}, ${message.guild.name}, ${message.author.username}: ${message.content}`);
-  fs.appendFile("logs.log", `${now}, ${message.guild.name}, ${message.author.username}: ${message.content}\n`, function (error) {
-    if (error) console.log(error);
-  });
+  try {
+    console.log(`${now}, ${message.guild.name}, ${message.author.username}: ${message.content}`);
+    fs.appendFile("logs.log", `${now}, ${message.guild.name}, ${message.author.username}: ${message.content}\n`, function (error) {
+      if (error) console.log(error);
+    });
+  } catch {
+    console.log(`${message.author.username}: ${message.content}`);
+    fs.appendFile("logs.log", `${message.author.username}: ${message.content}\n`, function (error) {
+      if (error) console.log(error);
+    });
+  }
 
   if (!message.content.startsWith(prefix) || message.author.bot) return;
   const args = message.content.slice(prefix.length).trim().split(/ +/);
   const command = args.shift().toLowerCase();
 
   if (command === 'help') {
-    message.channel.send(`:page_with_curl: Помощь: \`\`\`${prefix}help -  Выводит это сообщение\n${prefix}hi - Поздороваться\n${prefix}server - Информация о сервере\n${prefix}me - Узнать информацию о себе\n${prefix}password - Генерация паролей\n${prefix}music (ссылка) - воспроизведение музыки с YouTube\n${prefix}color (цвет) - вывести цвет в формате hex (#ffffff) или rgb (rgb(0,0,0)) без пробелов или random (случайный цвет в формате hex (#ffffff)\n${prefix}pokedex или ${prefix}pokemon + (имя) или (id) покемона - узнать информацию о покемоне)\n${prefix}invite - пригласить бота на сервер\n${prefix}coin - подбросить монету\n${prefix}clear (число до 100) - очистка сообщений\`\`\``);
+    message.channel.send(`:page_with_curl: Помощь: \`\`\`${prefix}help -  Выводит это сообщение\n${prefix}server - Информация о сервере\n${prefix}me - Узнать информацию о себе\n${prefix}password - Генерация паролей\n${prefix}music (ссылка) - воспроизведение музыки с YouTube\n${prefix}leave - выйти из канала\n${prefix}color (цвет) - вывести цвет в формате hex (#ffffff) или rgb (rgb(0,0,0)) без пробелов или random (случайный цвет в формате hex (#ffffff)\n${prefix}pokedex или ${prefix}pokemon + (имя) или (id) покемона - узнать информацию о покемоне\n${prefix}invite - пригласить бота на сервер\n${prefix}coin - подбросить монету\n${prefix}clear (число до 100) - очистка сообщений\n${prefix}neko - кошко\`\`\``);
   } else if (command === 'server') {
     try {
       message.channel.send(`:page_with_curl: Название сервера: ${message.guild.name}\nКоличество участников: ${message.guild.memberCount}`);
@@ -194,15 +204,17 @@ client.on('message', message => {
     } catch {
       message.channel.send(`Вы не можете удолять сообщения старше 2 недель. Попробуйте удолить сообщения помладше :no_entry_sign:`)
     }
-  }
-});
-
-client.on('message', async message => {
-  if (!message.content.startsWith(prefix) || message.author.bot) return;
-
-  const args = message.content.slice(prefix.length).trim().split(/ +/);
-  const command = args.shift().toLowerCase();
-  if (command === 'music') {
+  } else if (command === 'neko') {
+    try {
+      if (message.channel.nsfw) {
+        neko.nsfw.nekoGif().then(imageJson => { message.channel.send(imageJson.url); });
+      } else {
+        neko.sfw.neko().then(imageJson => { message.channel.send(imageJson.url); });
+      }
+    } catch {
+      message.channel.send('Ошибка');
+    }
+  } else if (command === 'music') {
     try {
       if (play == false) {
         if (args[0] !== undefined) {
@@ -250,7 +262,7 @@ client.on('message', async message => {
     } catch {
       message.channel.send('Невозможно выйти :no_entry_sign:');
     }
-   }
+  }
 });
 
 client.on('guildMemberAdd', async member => {
