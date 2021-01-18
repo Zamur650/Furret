@@ -1,31 +1,26 @@
 const Discord = require('discord.js');
+const nekoLifeClient = require('nekos.life');
 const ytdl = require('ytdl-core');
 const Canvas = require('canvas');
 const Pokedex = require('pokedex');
 const fs = require("fs");
-//const ytsr = require('ytsr');
 
 const { createCanvas } = require('canvas');
 const { token, prefix, welcomeChannel, backgroundWelcomeImageName, muteRoleName } = require('./config.json');
-//const { exception } = require('console');
 
 const client = new Discord.Client();
 const canvas = createCanvas(500, 500);
 const ctx = canvas.getContext('2d');
 pokedex = new Pokedex();
-let charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-let hexCharset = 'ABCDEF0123456789';
-let inviteUrl;
 let play = false;
-
-const nekoLifeClient = require('nekos.life');
 const neko = new nekoLifeClient();
+let queue = [];
 
 client.once('ready', () => {
   console.log(`Захожу как: ${client.user.tag}!`);
   client.user.setActivity(`${prefix}help - help`);
   client.generateInvite(["ADMINISTRATOR"]).then(link => {
-    inviteUrl = link;
+    let inviteUrl = link;
   });
 });
 
@@ -48,7 +43,7 @@ client.on('message', async message => {
   const command = args.shift().toLowerCase();
 
   if (command === 'help') {
-    message.channel.send(`:page_with_curl: Помощь: \`\`\`${prefix}help -  Выводит это сообщение\n${prefix}server - Информация о сервере\n${prefix}me - Узнать информацию о себе\n${prefix}password - Генерация паролей\n${prefix}music (ссылка) - воспроизведение музыки с YouTube\n${prefix}leave - выйти из канала\n${prefix}color (цвет) - вывести цвет в формате hex (#ffffff) или rgb (rgb(0,0,0)) без пробелов или random (случайный цвет в формате hex (#ffffff)\n${prefix}pokedex или ${prefix}pokemon + (имя) или (id) покемона - узнать информацию о покемоне\n${prefix}invite - пригласить бота на сервер\n${prefix}coin - подбросить монету\n${prefix}clear (число до 100) - очистка сообщений\n${prefix}neko - кошко\`\`\``);
+    message.channel.send(`:page_with_curl: Помощь: \`\`\`${prefix}help -  Выводит это сообщение\n${prefix}server - Информация о сервере\n${prefix}me - Узнать информацию о себе\n${prefix}password - Генерация паролей\n${prefix}music (ссылка) - воспроизведение музыки с YouTube\n${prefix}leave - выйти из канала\n${prefix}color (цвет) - вывести цвет в формате hex (#ffffff) или rgb (rgb(0,0,0)) без пробелов или random (случайный цвет в формате hex (#ffffff)\n${prefix}pokedex или ${prefix}pokemon + (имя) или (id) покемона - узнать информацию о покемоне\n${prefix}invite - пригласить бота на сервер\n${prefix}coin - подбросить монету\n${prefix}clear (число до 100) - очистка сообщений\n${prefix}neko - кошкодевочка\`\`\``);
   } else if (command === 'server') {
     try {
       message.channel.send(`:page_with_curl: Название сервера: ${message.guild.name}\nКоличество участников: ${message.guild.memberCount}`);
@@ -94,12 +89,14 @@ client.on('message', async message => {
       message.channel.send('Это не сервер!');
     }
   } else if (command === 'password') {
+    let charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let password = '';
     for (let i = 0, n = charset.length; i < 8; ++i) {
       password += charset.charAt(Math.floor(Math.random() * n));
     }
     message.channel.send(`Пароль: ||${password}|| :keyboard:`);
   } else if (command === 'color') {
+    let hexCharset = 'ABCDEF0123456789';
     let colorHex = args[0];
     if (colorHex === 'random') {
       colorHex = '#';
@@ -124,7 +121,11 @@ client.on('message', async message => {
     let pokemonName;
     let pokemonImage;
     try {
-      pokemonName = pokedex.pokemon(args[0].toLowerCase()).name;
+      try {
+        pokemonName = pokedex.pokemon(Number(args[0])).name;
+      } catch {
+        pokemonName = pokedex.pokemon(args[0].toLowerCase()).name;
+      }
       if (pokedex.pokemon(pokemonName).sprites.animated === undefined) {
         pokemonImage = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${pokedex.pokemon(pokemonName).id}.png`
       } else {
@@ -145,31 +146,7 @@ client.on('message', async message => {
 
       message.channel.send(Embed);
     } catch {
-      try {
-        pokemonName = pokedex.pokemon(Number(args[0])).name;
-        pokemonImage;
-        if (pokedex.pokemon(pokemonName).sprites.animated === undefined) {
-          pokemonImage = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${pokedex.pokemon(pokemonName).id}.png`
-        } else {
-          pokemonImage = pokedex.pokemon(pokemonName).sprites.animated;
-        }
-        const Embed = new Discord.MessageEmbed()
-          .setColor('#ffcc99')
-          .setTitle(`Имя: ${pokemonName}`)
-          .setDescription('Покемон')
-          .setThumbnail(pokemonImage)
-          .addFields(
-            { name: 'Номер', value: pokedex.pokemon(pokemonName).id },
-            { name: 'Рост', value: pokedex.pokemon(pokemonName).height },
-            { name: 'Вес', value: pokedex.pokemon(pokemonName).weight }
-          )
-          .setTimestamp()
-          .setFooter(client.user.tag, client.user.displayAvatarURL({ dynamic: true }));
-
-        message.channel.send(Embed);
-      } catch {
-        message.channel.send('Ошибка: покемон не найден');
-      }
+      message.channel.send('Ошибка :no_entry_sign:');
     }
   } else if (command === 'join') {
     client.emit('guildMemberAdd', message.member);
@@ -177,10 +154,10 @@ client.on('message', async message => {
     message.channel.send(`Ссылка-приглашение: ${inviteUrl}`)
   } else if (command === 'coin') {
     message.channel.send('Монета подбрасывается...')
-    var random = Math.floor(Math.random() * 3);
-    if (random === 1) {
+    var random = Math.floor(Math.random() * 2);
+    if (random === 0) {
       message.channel.send(':eagle: Орёл!')
-    } else if (random === 2) {
+    } else if (random === 1) {
       message.channel.send(':coin: Решка!')
     }
   } else if (command === 'clear') {
@@ -219,19 +196,19 @@ client.on('message', async message => {
       if (play == false) {
         if (args[0] !== undefined) {
           if (message.member.voice.channel) {
-            play = true;
             const connection = await message.member.voice.channel.join();
             const dispatcher = await connection.play(ytdl(args[0], { type: 'opus' }));
 
             dispatcher.on('start', () => {
+              play = true;
               message.channel.send(`Начинаю воспроизведение :musical_note:`);
             });
 
             dispatcher.on('finish', () => {
               if (play) {
+                play = false;
                 message.channel.send(`Воспроизведение завершено :musical_note:`);
                 connection.disconnect();
-                play = false;
               }
             });
             
@@ -247,18 +224,25 @@ client.on('message', async message => {
       }
     } catch {
       play = false;
+      message.channel.send('Ошибка :no_entry_sign:');
       return;
     }
-  } else if (command === 'leave') {
+  } else if (command === 'queue') {
     try {
-      if (play) {
-        play = false;
-        const connection = await message.member.voice.channel.join();
-        connection.disconnect();
-        message.channel.send('Успешно вышел из канала! :door:');
-      } else {
-        message.channel.send('Невозможно выйти :no_entry_sign:');
-      }
+      queue[queue.length] = [args[0]];
+      const connection = await message.member.voice.channel.join();
+      connection.disconnect();
+      message.channel.send('Успешно вышел из канала! :door:');
+    } catch {
+      message.channel.send('Невозможно выйти :no_entry_sign:');
+    }
+  } else if (command === 'leave') {
+    try {      
+      play = false;
+      queue = [];
+      const connection = await message.member.voice.channel.join();
+      connection.disconnect();
+      message.channel.send('Успешно вышел из канала! :door:');
     } catch {
       message.channel.send('Невозможно выйти :no_entry_sign:');
     }
@@ -340,7 +324,6 @@ client.once('reconnecting', () => {
 client.once('disconnect', () => {
   console.log(`Отключился как ${client.user.tag}!`);
 });
-
 
 client.on('guildMemberBoost', (member) => {
   console.log(`${member.user.tag} сделал "буст" серверу ${member.guild.name}!`);
