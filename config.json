@@ -1,6 +1,9 @@
 {
-  "token": "NjYyNTMzNjg1NTg0ODU1MDUw.Xg7Wkw.Lr7yFhx6CnA8hwi_6ZTh1gdzMFg",
+  "token": "NjYyNTMzNjg1NTg0ODU1MDUw.Xg7Wkw.yNOf_R4FePBF2OUz8Xm9HHO8OtI",
   "prefix": "$",
   "welcomeChannel": "зашли-на-сервер",
-  "backgroundWelcomeImageName": "wallpaper.png"
+  "backgroundWelcomeImageName": "wallpaper.png",
+  "developer": "Алексiй#5027",
+  "developerImage": "https://cdn.discordapp.com/avatars/586128640136445964/c5ed039affb7ddb210fc77876e837567.webp",
+  "fortuneBall": ["https://zamur650.github.io/luckypokeball/images/yes.png", "https://zamur650.github.io/luckypokeball/images/no.png"]
 }
