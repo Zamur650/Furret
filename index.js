@@ -15,6 +15,7 @@ const P = new Pokedex.Pokedex()
 
 const neko = new nekoLifeClient();
 let queue = [];
+let battles = [];
 
 let play = async (queue, message) => {
   try {
@@ -257,6 +258,38 @@ client.on('message', async message => {
       catch (err) {
         message.channel.send('Это не сервер!' + err);
       }
+  } else if (command === 'fight') {
+    if (args[0] === 'start') {
+      battles[battles.length] = {
+      "first":  {
+        "id": message.author.id,
+        "hp": "20",
+        "atk": "1",
+        "def": "0"
+      },
+      "second":{
+        "id": message.mentions.users.first().id,
+        "hp": "20",
+        "atk": "1",
+        "def": "0"
+      }
+    }
+      message.channel.send(`Вы начали сражение с ${message.mentions.users.first().username}!\nПервый ходит ${message.mentions.users.first().username}`);  
+    }
+        
+    else if (args[0] === 'battles') {
+      message.channel.send(JSON.stringify(battles));
+    } else if (args[0] === 'attack') {
+      for (i in battles.length) {
+        if (battles[i].first.id === message.author.id) {
+          let rewrite = battles[i].first;
+          battles[i].first = battles[i].second;
+          battles[i].second = rewrite;
+          message.channel.send(`${message.author.name} промохнулся`);
+          break;
+        }
+      }
+    }
   } else if (command === 'start') {
     play(queue, message);
   } else if (command === 'add') {
