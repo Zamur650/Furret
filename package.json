@@ -20,6 +20,6 @@
     "opusscript": "0.0.7",
     "pokeapi-js-wrapper": "^1.2.0",
     "ytdl-core": "^4.4.3",
-    "ytsr": "^1.0.4"
+    "ytsr": "^3.2.3"
   }
 }

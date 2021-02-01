@@ -2,8 +2,9 @@ const Discord = require('discord.js');
 const nekoLifeClient = require('nekos.life');
 const ytdl = require('ytdl-core');
 const Canvas = require('canvas');
-const Pokedex = require("pokeapi-js-wrapper")
 const fs = require("fs");
+const ytsr = require('ytsr');
+const https = require('https');
 
 const { createCanvas } = require('canvas');
 const { token, prefix, welcomeChannel, backgroundWelcomeImageName, developer, developerImage, fortuneBall } = require('./config.json');
@@ -11,18 +12,18 @@ const { token, prefix, welcomeChannel, backgroundWelcomeImageName, developer, de
 const client = new Discord.Client();
 const canvas = createCanvas(500, 500);
 const ctx = canvas.getContext('2d');
-const P = new Pokedex.Pokedex()
 
 const neko = new nekoLifeClient();
 let queue = [];
 let battles = [];
+let inviteUrl;
 
 let play = async (queue, message) => {
   try {
     if (queue[0] !== undefined) {
       if (message.member.voice.channel) {
         const connection = await message.member.voice.channel.join();
-        const dispatcher = await connection.play(ytdl(queue[0][0], { type: 'opus' }));        
+        const dispatcher = await connection.play(ytdl(queue[0], { type: 'opus' }));
 
         dispatcher.on('start', () => {
           message.channel.send(`Начинаю воспроизведение :musical_note:`);
@@ -42,7 +43,7 @@ let play = async (queue, message) => {
       message.channel.send('В очереди ничего нет :no_entry_sign:');
     }
   } catch {
-    message.channel.send('Ошибка :no_entry_sign');
+    message.channel.send('Ошибка :no_entry_sign:');
     return;
   }
 };
@@ -51,11 +52,13 @@ client.once('ready', () => {
   console.log(`Захожу как: ${client.user.tag}!`);
   client.user.setActivity(`${prefix}help - help`);
   client.generateInvite(["ADMINISTRATOR"]).then(link => {
-    let inviteUrl = link;
+    inviteUrl = link;
   });
 });
 
 client.on('message', async message => {
+
+
   var now = new Date();
   try {
     console.log(`${now}, ${message.guild.name}, ${message.author.username}: ${message.content}`);
@@ -74,14 +77,49 @@ client.on('message', async message => {
   const command = args.shift().toLowerCase();
 
   if (command === 'help') {
-    message.channel.send(`:page_with_curl: Помощь: \`\`\`${prefix}help -  Выводит это сообщение\n${prefix}server - Информация о сервере\n${prefix}me - Узнать информацию о себе\n${prefix}password - Генерация паролей\n${prefix}add (ссылка) - добавить музыку с YouTube в очередь\n${prefix}start - запустить музыку\n${prefix}skip - пропустить музыку\n${prefix}leave - выйти из голосового канала\n${prefix}color (цвет) - вывести цвет в формате hex (#ffffff) или rgb (rgb(0,0,0)) без пробелов или random (случайный цвет в формате hex (#ffffff)\n${prefix}pokedex или ${prefix}pokemon + (имя) или (id) покемона - узнать информацию о покемоне\n${prefix}invite - пригласить бота на сервер\n${prefix}coin - подбросить монету\n${prefix}clear (число до 100) - очистка сообщений\n${prefix}neko - кошка :)\n${prefix}info - информация о боте\`\`\``);
+    const Embed = new Discord.MessageEmbed()
+      .setColor('#ffcc99')
+      .setTitle(`Помощь`)
+      .setURL()
+      .setDescription(message.guild.name)
+      .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
+      .addFields(
+        { name: `${prefix}help`, value: 'Выводит это сообщение' },
+        { name: `${prefix}server`, value: 'Информация о сервере' },
+        { name: `${prefix}me`, value: 'Узнать информацию о себе' },
+        { name: `${prefix}password`, value: 'Генерация паролей' },
+        { name: `${prefix}add (ссылка)`, value: 'Добавить музыку с YouTube в очередь' },
+        { name: `${prefix}start`, value: 'Запустить музыку из очереди' },
+        { name: `${prefix}skip`, value: 'Пропустить музыку' },
+        { name: `${prefix}leave`, value: 'Выйти из голосового канала' },
+        { name: `${prefix}color (цвет)`, value: 'Вывести цвет в формате hex (#ffffff) или rgb (rgb(0,0,0)) без пробелов или random (случайный цвет в формате hex (#ffffff)' },
+        { name: `${prefix}pokedex или ${prefix}pokemon + (имя) или (id) покемона`, value: 'Узнать информацию о покемоне' },
+        { name: `${prefix}invite`, value: 'Пригласить бота на сервер' },
+        { name: `${prefix}coin`, value: 'Подбросить монету' },
+        { name: `${prefix}luckyball`, value: 'Магический шар' },
+        { name: `${prefix}clear (число до 100)`, value: 'Очистка сообщений' },
+        { name: `${prefix}neko`, value: 'Неко' }
+      )
+      .setFooter(`От ${developer}`, developerImage);
+    message.channel.send(Embed);
   } else if (command === 'server') {
+    console.log()
     try {
-      message.channel.send(`:page_with_curl: Название сервера: ${message.guild.name}\nКоличество участников: ${message.guild.memberCount}`);
+      let embed = new Discord.MessageEmbed()
+        .setColor('#ffcc99')
+        .setTitle("Информация о сервере")
+        .setImage(message.guild.iconURL)
+        .setDescription(`${message.guild}`)
+        .addField("Владелец", `Владелец сервера: ${message.guild.owner}`)
+        .addField("Количество участинков", `На этом сервере ${message.guild.memberCount} участников`)
+        .addField("Количество смайликов", `На этом сервере ${message.guild.emojis.cache.size} смайликов`)
+        .addField("Количество ролей", `На этом сервере ${message.guild.roles.cache.size} ролей`)
+      message.channel.send(embed)
+    } catch {
+      message.channel.send('Это не сервер :no_entry_sign:');
     }
-    catch {
-      message.channel.send('Это не сервер :(');
-    }
+  } else if (command === 'water') {
+    message.channel.send('https://i.pinimg.com/originals/a2/27/a6/a227a6de61472f9bef7f134ed62bf703.jpg')
   } else if (command === 'me') {
     try {
       let channelEmbed = message.member.voice.channel;
@@ -128,7 +166,7 @@ client.on('message', async message => {
     message.channel.send(`Пароль: ||${password}|| :keyboard:`);
   } else if (command === 'color') {
     let hexCharset = 'ABCDEF0123456789';
-    let colorHex = args[0];
+    let colorHex = args.join('');
     if (colorHex === 'random') {
       colorHex = '#';
       for (let i = 0, n = hexCharset.length; i < 6; ++i) {
@@ -150,35 +188,44 @@ client.on('message', async message => {
     message.channel.send(colorHex, attachment);
   } else if (command === 'pokedex' || command === 'pokemon') {
     try {
-      P.getPokemonByName(args[0].toLowerCase()).then(response => {
-        let pokemonType;
-        if (response.types[0].type.name !== undefined) {
-          pokemonType = `${response.types[0].type.name} / ${response.types[1].type.name}`;
-        } else {
-          pokemonType = response.types[0].type.name;
-        }
-        const Embed = new Discord.MessageEmbed()
-          .setColor('#ffcc99')
-          .setTitle(`Имя: ${response.name}`)
-          .setDescription(pokemonType)
-          .setThumbnail(response.sprites.front_default)
-          .addFields(
-            { name: 'ID', value: response.id },
-            { name: 'total', value: response.stats[0].base_stat + response.stats[1].base_stat + response.stats[2].base_stat + response.stats[3].base_stat + response.stats[4].base_stat + response.stats[5].base_stat },
-            { name: 'HP', value: response.stats[0].base_stat },
-            { name: 'Атака', value: response.stats[1].base_stat },
-            { name: 'Защита', value: response.stats[2].base_stat },
-            { name: 'Специальная атака', value: response.stats[3].base_stat },
-            { name: 'Специальная защита', value: response.stats[4].base_stat },
-            { name: 'Скорость', value: response.stats[5].base_stat },
-            { name: 'Рост', value: response.height },
-            { name: 'Вес', value: response.weight }
-          )
-        message.channel.send(Embed);
+      https.get(`https://pokeapi.co/api/v2/pokemon/${args[0]}`, (json) => {
+        let body = '';
+
+        json.on('data', (chunk) => {
+          body += chunk;
+        });
+
+        json.on('end', () => {
+          const response = JSON.parse(body);
+          let type;
+          try {
+            type = response.types[0].type.name + '/' + response.types[1].type.name;
+          } catch {
+            type = response.types[0].type.name;
+          }
+          const Embed = new Discord.MessageEmbed()
+            .setColor('#ffcc99')
+            .setTitle(`Имя: ${response.name}`)
+            .setDescription(`Тип: ${type}`)
+            .setThumbnail(response.sprites.front_default)
+            .addFields(
+              { name: 'ID', value: response.id },
+              { name: 'total', value: response.stats[0].base_stat + response.stats[1].base_stat + response.stats[2].base_stat + response.stats[3].base_stat + response.stats[4].base_stat + response.stats[5].base_stat },
+              { name: 'HP', value: response.stats[0].base_stat },
+              { name: 'Атака', value: response.stats[1].base_stat },
+              { name: 'Защита', value: response.stats[2].base_stat },
+              { name: 'Специальная атака', value: response.stats[3].base_stat },
+              { name: 'Специальная защита', value: response.stats[4].base_stat },
+              { name: 'Скорость', value: response.stats[5].base_stat },
+              { name: 'Рост', value: response.height },
+              { name: 'Вес', value: response.weight }
+            )
+          message.channel.send(Embed);
+        });
       });
-      } catch {
-        message.channel.send('Ошибка :no_entry_sign');
-      }    
+    } catch (err) {
+      message.channel.send('Ошибка :no_entry_sign:')
+    }
   } else if (command === 'join') {
     client.emit('guildMemberAdd', message.member);
   } else if (command === 'invite') {
@@ -203,16 +250,10 @@ client.on('message', async message => {
       if (amount > 100) return message.channel.send('Вы не можете удалить 100 сообщений за раз! :no_entry_sign:');
       if (amount < 1) return message.channel.send('Вы должны ввести число больше чем 1! :no_entry_sign:');
 
-      async function delete_messages() {
-        await message.channel.messages.fetch({
-          limit: amount
-        }).then(messages => {
-          message.channel.bulkDelete(messages)
-          message.channel.send(`Удалено ${amount} сообщений! :wastebasket:`)
-        })
-      };
-      delete_messages();
-    } catch {
+      message.channel.bulkDelete(amount);
+      message.channel.send(`Удалено ${amount} сообщен(ий/ие/ия) :wastebasket:`)
+      
+    } catch (err) {
       message.channel.send(`Вы не можете удолять сообщения старше 2 недель. Попробуйте удолить сообщения помладше :no_entry_sign:`)
     }
   } else if (command === 'neko') {
@@ -225,39 +266,6 @@ client.on('message', async message => {
     } catch {
       message.channel.send('Ошибка');
     }
-  } else if (command === 'info') {
-      try {
-        let status = client.user.presence.status;
-        switch (status) {
-          case 'online':
-            status = ':green_circle: В сети';
-            break;
-          case 'idle':
-            status = ':crescent_moon: Не активен';
-            break;
-          case 'dnd':
-            status = ':red_circle: Не беспокоить';
-            break;
-          case 'offline':
-            status = ':black_circle: Не в сети';
-            break;
-        }
-        const Embed = new Discord.MessageEmbed()
-          .setColor('#ffcc99')
-          .setTitle(`Имя: ${client.user.tag}`)
-          .setURL()
-          .setDescription(`На сревере: ${message.guild.name}`)
-          .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
-          .addFields(
-            { name: 'Статус', value: status },
-            { name: 'Id', value: client.user.id }
-        )
-          .setFooter(`От ${developer}`, developerImage);
-        message.channel.send(Embed);
-      }
-      catch (err) {
-        message.channel.send('Это не сервер!' + err);
-      }
   } else if (command === 'fight') {
     if (args[0] === 'start') {
       battles[battles.length] = {
@@ -294,7 +302,14 @@ client.on('message', async message => {
     play(queue, message);
   } else if (command === 'add') {
     try {
-      queue[queue.length] = [args[0]];
+      if (ytdl.validateURL(args[0])) {
+        queue[queue.length] = [args[0]];
+      } else {
+        let search = await ytsr(args.join('+'), { limit: 1 });
+        queue[queue.length] = 'https://www.youtube.com/watch?v=' + search.refinements[0].bestThumbnail.url.substr(23).substr(0, 11);
+        console.log(queue[queue.length])
+      } 
+
       message.channel.send('Добавленно в очередь :musical_note:');
     } catch {
       message.channel.send('Ошибка :no_entry_sign:');
@@ -303,6 +318,7 @@ client.on('message', async message => {
     try {
       queue.shift();
       const connection = await message.member.voice.channel.join();
+      connection.disconnect();
       message.channel.send('Пропустил :musical_note:');
       play(queue, message);
     } catch {
