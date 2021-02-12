@@ -1,4 +1,5 @@
 node_modules
+logs
 ffprobe.exe
 ffplay.exe
 ffmpeg.exe

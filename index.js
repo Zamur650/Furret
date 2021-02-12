@@ -7,7 +7,7 @@ const ytsr = require('ytsr');
 const https = require('https');
 
 const { createCanvas } = require('canvas');
-const { token, prefix, welcomeChannel, backgroundWelcomeImageName, developer, developerImage, fortuneBall } = require('./config.json');
+const { token, prefix, welcomeChannel, backgroundWelcomeImageName, developer, developerImage, fortuneBall, webLink } = require('./config.json');
 
 const client = new Discord.Client();
 const canvas = createCanvas(500, 500);
@@ -50,26 +50,26 @@ let play = async (queue, message) => {
 
 client.once('ready', () => {
   console.log(`Захожу как: ${client.user.tag}!`);
-  client.user.setActivity(`${prefix}help - help`);
-  client.generateInvite(["ADMINISTRATOR"]).then(link => {
+  client.user.setActivity(`${prefix}help - ${webLink}`);
+  client.generateInvite(['ADMINISTRATOR']).then(link => {
     inviteUrl = link;
   });
 });
 
 client.on('message', async message => {
-
-
   var now = new Date();
+
   try {
+    if (!fs.existsSync(`./logs/${message.guild.name}/`)) {
+      fs.mkdirSync(`./logs/${message.guild.name}/`)
+    }
+
     console.log(`${now}, ${message.guild.name}, ${message.author.username}: ${message.content}`);
-    fs.appendFile("logs.log", `${now}, ${message.guild.name}, ${message.author.username}: ${message.content}\n`, function (error) {
+    fs.appendFile(`./logs/${message.guild.name}/logs.log`, `${now}, ${message.author.username}: ${message.content}\n`, function (error) {
       if (error) console.log(error);
     });
   } catch {
     console.log(`${message.author.username}: ${message.content}`);
-    fs.appendFile("logs.log", `${message.author.username}: ${message.content}\n`, function (error) {
-      if (error) console.log(error);
-    });
   }
 
   if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -81,7 +81,7 @@ client.on('message', async message => {
       .setColor('#ffcc99')
       .setTitle(`Помощь`)
       .setURL()
-      .setDescription(message.guild.name)
+      .setDescription(`Помощь: ${message.guild.name}`)
       .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
       .addFields(
         { name: `${prefix}help`, value: 'Выводит это сообщение' },
