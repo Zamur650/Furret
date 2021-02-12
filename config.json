@@ -5,5 +5,6 @@
   "backgroundWelcomeImageName": "wallpaper.png",
   "developer": "Алексiй#5027",
   "developerImage": "https://cdn.discordapp.com/avatars/586128640136445964/c5ed039affb7ddb210fc77876e837567.webp",
-  "fortuneBall": ["https://zamur650.github.io/luckypokeball/images/yes.png", "https://zamur650.github.io/luckypokeball/images/no.png"]
+  "fortuneBall": ["https://zamur650.github.io/luckypokeball/images/yes.png", "https://zamur650.github.io/luckypokeball/images/no.png"],
+  "webLink": "https://zamur650.github.io/furret/"
 }
