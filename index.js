@@ -2,12 +2,12 @@ const Discord = require('discord.js');
 const nekoLifeClient = require('nekos.life');
 const ytdl = require('ytdl-core');
 const Canvas = require('canvas');
-const fs = require("fs");
-const ytsr = require('ytsr');
+const fs = require('fs');
+const YouTube = require('youtube-sr').default;
 const https = require('https');
 
 const { createCanvas } = require('canvas');
-const { token, prefix, welcomeChannel, backgroundWelcomeImageName, developer, developerImage, fortuneBall, webLink } = require('./config.json');
+const { token, prefix, welcomeChannel, backgroundWelcomeImageName, developer, developerImage, fortuneBall, webLink, botColor } = require('./config.json');
 
 const client = new Discord.Client();
 const canvas = createCanvas(500, 500);
@@ -18,7 +18,7 @@ let queue = [];
 let battles = [];
 let inviteUrl;
 
-let play = async (queue, message) => {
+let play = async (queue, message) => {  
   try {
     if (queue[0] !== undefined) {
       if (message.member.voice.channel) {
@@ -26,7 +26,9 @@ let play = async (queue, message) => {
         const dispatcher = await connection.play(ytdl(queue[0], { type: 'opus' }));
 
         dispatcher.on('start', () => {
-          message.channel.send(`Начинаю воспроизведение :musical_note:`);
+          ytdl.getInfo(queue[0]).then(info => {
+            message.channel.send(`Начинаю воспроизведение: ${info.videoDetails.title}  :musical_note:`);
+          });
         });
 
         dispatcher.on('finish', () => {
@@ -42,7 +44,7 @@ let play = async (queue, message) => {
     } else {
       message.channel.send('В очереди ничего нет :no_entry_sign:');
     }
-  } catch {
+  } catch (err) {
     message.channel.send('Ошибка :no_entry_sign:');
     return;
   }
@@ -50,7 +52,7 @@ let play = async (queue, message) => {
 
 client.once('ready', () => {
   console.log(`Захожу как: ${client.user.tag}!`);
-  client.user.setActivity(`${prefix}help - ${webLink}`);
+  client.user.setActivity(`${prefix}help | ${webLink}`);
   client.generateInvite(['ADMINISTRATOR']).then(link => {
     inviteUrl = link;
   });
@@ -78,7 +80,7 @@ client.on('message', async message => {
 
   if (command === 'help') {
     const Embed = new Discord.MessageEmbed()
-      .setColor('#ffcc99')
+      .setColor(botColor)
       .setTitle(`Помощь`)
       .setURL()
       .setDescription(`Помощь: ${message.guild.name}`)
@@ -88,7 +90,7 @@ client.on('message', async message => {
         { name: `${prefix}server`, value: 'Информация о сервере' },
         { name: `${prefix}me`, value: 'Узнать информацию о себе' },
         { name: `${prefix}password`, value: 'Генерация паролей' },
-        { name: `${prefix}add (ссылка)`, value: 'Добавить музыку с YouTube в очередь' },
+        { name: `${prefix}add (ссылка / название)`, value: 'Добавить музыку с YouTube в очередь' },
         { name: `${prefix}start`, value: 'Запустить музыку из очереди' },
         { name: `${prefix}skip`, value: 'Пропустить музыку' },
         { name: `${prefix}leave`, value: 'Выйти из голосового канала' },
@@ -106,7 +108,7 @@ client.on('message', async message => {
     console.log()
     try {
       let embed = new Discord.MessageEmbed()
-        .setColor('#ffcc99')
+        .setColor(botColor)
         .setTitle("Информация о сервере")
         .setImage(message.guild.iconURL)
         .setDescription(`${message.guild}`)
@@ -142,7 +144,7 @@ client.on('message', async message => {
         channelEmbed = 'Не в канале';
       }
       const Embed = new Discord.MessageEmbed()
-        .setColor('#ffcc99')
+        .setColor(botColor)
         .setTitle(`Имя: ${message.author.username}`)
         .setURL()
         .setDescription(`Участник сервера: ${message.guild.name}`)
@@ -204,7 +206,7 @@ client.on('message', async message => {
             type = response.types[0].type.name;
           }
           const Embed = new Discord.MessageEmbed()
-            .setColor('#ffcc99')
+            .setColor(botColor)
             .setTitle(`Имя: ${response.name}`)
             .setDescription(`Тип: ${type}`)
             .setThumbnail(response.sprites.front_default)
@@ -283,8 +285,7 @@ client.on('message', async message => {
       }
     }
       message.channel.send(`Вы начали сражение с ${message.mentions.users.first().username}!\nПервый ходит ${message.mentions.users.first().username}`);  
-    }
-        
+    }        
     else if (args[0] === 'battles') {
       message.channel.send(JSON.stringify(battles));
     } else if (args[0] === 'attack') {
@@ -293,7 +294,7 @@ client.on('message', async message => {
           let rewrite = battles[i].first;
           battles[i].first = battles[i].second;
           battles[i].second = rewrite;
-          message.channel.send(`${message.author.name} промохнулся`);
+          message.channel.send(`${message.author.name} промахнулся`);
           break;
         }
       }
@@ -303,22 +304,20 @@ client.on('message', async message => {
   } else if (command === 'add') {
     try {
       if (ytdl.validateURL(args[0])) {
-        queue[queue.length] = [args[0]];
-      } else {
-        let search = await ytsr(args.join('+'), { limit: 1 });
-        queue[queue.length] = 'https://www.youtube.com/watch?v=' + search.refinements[0].bestThumbnail.url.substr(23).substr(0, 11);
-        console.log(queue[queue.length])
-      } 
-
-      message.channel.send('Добавленно в очередь :musical_note:');
+        queue[queue.length] = args[0];
+      } else {        
+        YouTube.search(args.join('+'), { limit: 1 }).then(result => {
+          queue[queue.length] = result;
+        });  
+      }
+      message.channel.send(`Добавил в очередь :musical_note:`);
     } catch {
       message.channel.send('Ошибка :no_entry_sign:');
     }
+      
   } else if (command === 'skip') {
     try {
       queue.shift();
-      const connection = await message.member.voice.channel.join();
-      connection.disconnect();
       message.channel.send('Пропустил :musical_note:');
       play(queue, message);
     } catch {

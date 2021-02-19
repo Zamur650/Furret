@@ -19,6 +19,7 @@
     "nekos.life": "^2.0.7",
     "opusscript": "0.0.7",
     "pokeapi-js-wrapper": "^1.2.0",
+    "youtube-sr": "^3.0.4",
     "ytdl-core": "^4.4.3",
     "ytsr": "^3.2.3"
   }
