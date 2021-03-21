@@ -1,11 +1,13 @@
 {
-  "token": "NjYyNTMzNjg1NTg0ODU1MDUw.Xg7Wkw.8WuGYhxQLHDKuUhO6en0MZJFjNw",
+  "token": "NjYyNTMzNjg1NTg0ODU1MDUw.Xg7Wkw.5tsC_hwYsPVmG6rzEPyliWKvUbU",
   "prefix": "$",
   "welcomeChannel": "зашли-на-сервер",
   "backgroundWelcomeImageName": "wallpaper.png",
   "developer": "Алексiй#5027",
-  "developerImage": "https://cdn.discordapp.com/avatars/586128640136445964/c5ed039affb7ddb210fc77876e837567.webp",
-  "fortuneBall": ["https://zamur650.github.io/luckypokeball/images/yes.png", "https://zamur650.github.io/luckypokeball/images/no.png"],
-  "webLink": "https://zamur650.github.io/furret/",
-  "botColor": "#ffcc99"
+  "developerImage": "https://cdn.discordapp.com/avatars/586128640136445964/34d50abe26874eccfbe1380a3bad707e.webp",
+  "fortuneBall": ["zamur650.github.io/luckypokeball/images/yes.png", "zamur650.github.io/luckypokeball/images/no.png"],
+  "webLink": "zamur650.github.io/furret",
+  "botColor": "#ffcc99",
+  "starSmile": ":star:",
+  "warframeLanguage": "ru"
 }
