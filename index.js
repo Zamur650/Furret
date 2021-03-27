@@ -7,7 +7,7 @@ const YouTube = require('youtube-sr').default;
 const https = require('https');
 
 const { createCanvas } = require('canvas');
-const { token, prefix, welcomeChannel, backgroundWelcomeImageName, developer, developerImage, fortuneBall, webLink, botColor, starSmile, warframeLanguage } = require('./config.json');
+const { token, prefix, welcomeChannel, backgroundWelcomeImageName, developer, developerImage, fortuneBall, webLink, botColor, starEmoji, warframeLanguage } = require('./config.json');
 
 const client = new Discord.Client();
 const canvas = createCanvas(500, 500);
@@ -52,14 +52,14 @@ let play = async (queue, message) => {
 
 client.once('ready', () => {
   console.log(`Захожу как: ${client.user.tag}!`);
-  client.user.setActivity(`${prefix}help | ${webLink}`);
+  client.user.setActivity(`${prefix}help`);
   client.generateInvite(['ADMINISTRATOR']).then(link => {
     inviteUrl = link;
   });
 });
 
 client.on('message', async message => {
-  var now = new Date();
+  var now = new Date()
 
   try {
     if (!fs.existsSync(`./logs/${message.guild.name}/`)) {
@@ -81,8 +81,7 @@ client.on('message', async message => {
   if (command === 'help') {
     const Embed = new Discord.MessageEmbed()
       .setColor(botColor)
-      .setTitle(`Помощь`)
-      .setURL('https://' + webLink)
+      .setTitle('Помощь')
       .setDescription(`Помощь на сервере ${message.guild.name}`)
       .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
       .addFields(
@@ -94,14 +93,14 @@ client.on('message', async message => {
         { name: `${prefix}start`, value: 'Запустить музыку из очереди', inline: true },
         { name: `${prefix}skip`, value: 'Пропустить музыку', inline: true },
         { name: `${prefix}leave`, value: 'Выйти из голосового канала', inline: true },
-        { name: `${prefix}color (цвет)`, value: 'Вывести цвет в формате hex (#ffffff) или rgb (rgb(255, 255, 255)) без пробелов или random (случайный цвет в формате hex (#ffffff)', inline: true },
+        { name: `${prefix}color (цвет / random)`, value: 'Вывести цвет в формате hex (#ffffff) или rgb (rgb(255, 255, 255)) без пробелов / random (случайный цвет в формате hex (#ffffff)', inline: true },
         { name: `${prefix}pokedex или ${prefix}pokemon + (имя) или (id) покемона`, value: 'Узнать информацию о покемоне', inline: true },
         { name: `${prefix}invite`, value: 'Пригласить бота на сервер', inline: true },
         { name: `${prefix}coin`, value: 'Подбросить монету', inline: true },
         { name: `${prefix}luckyball`, value: 'Магический шар', inline: true },
         { name: `${prefix}clear (число до 100)`, value: 'Очистка сообщений', inline: true },
         { name: `${prefix}neko`, value: 'Кошка', inline: true },
-        { name: `${prefix}genshin (имя персонажа на английском)`, value: 'Информация о персонаже', inline: true }
+        { name: `${prefix}genshin (имя персонажа / название оружия / название набора артефактов на английском)`, value: 'Информация о персонаже / оружии / наборе артефактов', inline: true }
       )
       .setFooter(`От ${developer}`, developerImage);
     message.channel.send(Embed);
@@ -121,8 +120,6 @@ client.on('message', async message => {
     } catch {
       message.channel.send('Это не сервер :no_entry_sign:');
     }
-  } else if (command === 'water') {
-    message.channel.send('https://i.pinimg.com/originals/a2/27/a6/a227a6de61472f9bef7f134ed62bf703.jpg')
   } else if (command === 'me') {
     try {
       let channelEmbed = message.member.voice.channel;
@@ -146,7 +143,7 @@ client.on('message', async message => {
       }
       const Embed = new Discord.MessageEmbed()
         .setColor(botColor)
-        .setTitle(`Имя: ${message.author.username}`)
+        .setTitle(`Имя: ${message.author.username}#${message.author.discriminator}`)
         .setURL()
         .setDescription(`Участник сервера: ${message.guild.name}`)
         .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
@@ -190,7 +187,7 @@ client.on('message', async message => {
     const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'ColorHexSend.png');
     message.channel.send(colorHex, attachment);
   } else if (command === 'pokedex' || command === 'pokemon') {  
-    https.get(`https://pokeapi.co/api/v2/pokemon/${args[0]}`, (json) => {      
+    https.get(`https://pokeapi.co/api/v2/pokemon/${args.join('-').toLowerCase()}`, (json) => {
       let body = '';
 
       json.on('data', (chunk) => {
@@ -223,13 +220,67 @@ client.on('message', async message => {
               { name: 'SPEED', value: response.stats[5].base_stat, inline: true }
             )
           message.channel.send(Embed);
-        } catch {
-          message.channel.send('Ошибка :no_entry_sign:')
+        } catch (err) {
+          message.channel.send('Ошибка :no_entry_sign:' + err)
         }
       });
     });    
+  } else if (command === 'anime') {
+    https.get(`https://kitsu.io/api/edge/anime?filter[text]=${args.join('%20')}`, (json) => {
+      let body = '';
+
+      json.on('data', (chunk) => {
+        body += chunk;
+      });
+
+      json.on('end', () => {
+        try {
+          const response = JSON.parse(body);
+          const Embed = new Discord.MessageEmbed()
+            .setColor(botColor)
+            .setTitle(`Имя: ${response.data[0].attributes.titles.en}`)
+            .setDescription(response.data[0].attributes.description)
+            .setThumbnail(response.data[0].attributes.posterImage.original)
+            .addFields(
+              { name: 'Оценка', value: response.data[0].attributes.averageRating, inline: true },
+              { name: 'Возвравстные ограничения', value: response.data[0].attributes.ageRatingGuide, inline: true },
+              { name: 'Дата выхода', value: response.data[0].attributes.startDate.replace('-', ' '), inline: true }
+            )
+          message.channel.send(Embed);
+        } catch (err) {
+          message.channel.send('Ошибка :no_entry_sign:' + err)
+        }
+      });
+    });
+  } else if (command === 'search') {
+    https.get(`https://api.duckduckgo.com/?q=${args.join('%20')}&format=json`, (json) => {
+      let body = '';
+
+      json.on('data', (chunk) => {
+        body += chunk;
+      });
+
+      json.on('end', () => {
+        try {
+          const response = JSON.parse(body);
+          const Embed = new Discord.MessageEmbed()
+            .setColor(botColor)
+            .setTitle(`Имя: ${response.Heading}`)
+            .setDescription(response.Abstract)
+            .setThumbnail(`https://api.duckduckgo.com${response.Image}`)
+            /*.addFields(
+              { name: 'Оценка', value: response.data[0].attributes.averageRating, inline: true },
+              { name: 'Возвравстные ограничения', value: response.data[0].attributes.ageRatingGuide, inline: true },
+              { name: 'Дата выхода', value: response.data[0].attributes.startDate.replace('-', ' '), inline: true }
+            )*/
+          message.channel.send(Embed);
+        } catch (err) {
+          message.channel.send('Ошибка :no_entry_sign:' + err)
+        }
+      });
+    });
   } else if (command === 'genshin') {
-    let name = args.join(' ').replace(' ', '-')
+    let name = args.join(' ')
 
     https.get(`https://api.genshin.dev/characters/${name.replace(' ', '-')}`, (json) => {
       let body = '';
@@ -245,7 +296,7 @@ client.on('message', async message => {
           let rarity = '';
 
           for (let i = 0; i < response.rarity; i++) {
-            rarity += starSmile;
+            rarity += starEmoji;
           }  
 
           const Embed = new Discord.MessageEmbed()
@@ -263,7 +314,92 @@ client.on('message', async message => {
             )
           message.channel.send(Embed);
         } catch {
-          message.channel.send('Ошибка :no_entry_sign:')
+          https.get(`https://api.genshin.dev/weapons/${name.replace(' ', '-')}`, (json) => {
+            let body = '';
+
+            json.on('data', (chunk) => {
+              body += chunk;
+            });
+
+            json.on('end', () => {
+              try {
+                const response = JSON.parse(body);
+
+                let rarity = '';
+
+                for (let i = 0; i < response.rarity; i++) {
+                  rarity += starEmoji;
+                }
+
+                const Embed = new Discord.MessageEmbed()
+                  .setColor(botColor)
+                  .setTitle(`Имя: ${response.name}`)
+                  .setDescription(response.passiveDesc)
+                  .setThumbnail(`https://api.genshin.dev/weapons/${response.name.toLowerCase().replace(' ', '-')}/icon`)
+                  .addFields(
+                    { name: 'Редкость', value: rarity, inline: true },
+                    { name: 'Название', value: response.passiveName, inline: true },
+                    { name: 'Получение', value: response.location, inline: true },
+                    { name: 'Вид', value: response.type, inline: true },                    
+                    { name: 'Увеличивает', value: response.subStat, inline: true },
+                    { name: 'Урон', value: response.baseAttack, inline: true }
+                  )
+                message.channel.send(Embed);
+              } catch {
+                https.get(`https://api.genshin.dev/artifacts/${name.replace(' ', '-')}`, (json) => {
+                  let body = '';
+
+                  json.on('data', (chunk) => {
+                    body += chunk;
+                  });
+
+                  json.on('end', () => {
+                    try {
+                      const response = JSON.parse(body);
+
+                      let icon = https.get(`https://api.genshin.dev/artifacts/${name.toLowerCase().replace(' ', '-')}/icon`, (json) => {
+                        let body = '';
+
+                        json.on('data', (chunk) => {
+                          body += chunk;
+                        });
+
+                        json.on('end', () => {
+                          try {
+                            let icon = JSON.parse(body).availableImages[0];
+
+                            let rarity = '';
+
+                            for (let i = 0; i < response.max_rarity; i++) {
+                              rarity += starEmoji;
+                            }
+
+                            const Embed = new Discord.MessageEmbed()
+                              .setColor(botColor)
+                              .setTitle(`Имя: ${response.name}`)
+                              .setDescription(`Редкость: ${rarity}`)
+                              .setThumbnail(`https://api.genshin.dev/artifacts/${name.toLowerCase().replace(' ', '-')}/${icon}/`)
+                              .addFields(
+                                { name: '2 бонус', value: response['2-piece_bonus'], inline: true },
+                                { name: '4 бонус', value: response['4-piece_bonus'], inline: true }
+                              )
+                          
+                            console.log(icon)
+
+                            message.channel.send(Embed);
+                          } catch {
+                            message.channel.send('Ошибка :no_entry_sign:')
+                          }
+                        });
+                      });  
+                    } catch {
+                      message.channel.send('Ошибка :no_entry_sign:')
+                    }
+                  });
+                });
+              }
+            });
+          });
         }
       });
     });
@@ -340,27 +476,39 @@ client.on('message', async message => {
       "first":  {
         "id": message.author.id,
         "hp": "20",
-        "atk": "1",
-        "def": "0"
+        "atk": "2",
+        "def": "2"
       },
       "second":{
         "id": message.mentions.users.first().id,
         "hp": "20",
-        "atk": "1",
-        "def": "0"
+        "atk": "2",
+        "def": "2"
       }
     }
       message.channel.send(`Вы начали сражение с ${message.mentions.users.first().username}!\nПервый ходит ${message.mentions.users.first().username}`);  
     }        
-    else if (args[0] === 'battles') {
+    else if (args[0] === 'battles') { //forDev
       message.channel.send(JSON.stringify(battles));
     } else if (args[0] === 'attack') {
-      for (i in battles.length) {
+      for (i in battles) {
         if (battles[i].first.id === message.author.id) {
           let rewrite = battles[i].first;
           battles[i].first = battles[i].second;
           battles[i].second = rewrite;
-          message.channel.send(`${message.author.name} промахнулся`);
+          battles[i].first.hp = battles[i].first.hp - battles[i].second.atk / battles[i].first.def;
+          message.channel.send(`Здоровье врага: ${battles[i].first.hp}`);
+          break;
+        }
+      }
+    } else if (args[0] === 'bulk') {
+      for (i in battles) {
+        if (battles[i].first.id === message.author.id) {
+          let rewrite = battles[i].first;
+          battles[i].first = battles[i].second;
+          battles[i].second = rewrite;
+          battles[i].second.atk = battles[i].second.atk * 2;
+          message.channel.send(`Вы повысили свою атаку!`);
           break;
         }
       }
@@ -435,7 +583,7 @@ client.on('guildMemberAdd', async member => {
 
 client.once('reconnecting', () => {
   console.log(`Перезашёл как: ${client.user.tag}!`);
-  client.user.setActivity(`${prefix}help | ${webLink}`);
+  client.user.setActivity(`${prefix}help`);
   client.generateInvite(["ADMINISTRATOR"]).then(link => {
     inviteUrl = link;
   });

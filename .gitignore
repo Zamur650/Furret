@@ -1,5 +1,7 @@
-node_modules
-logs
+package-lock.json
 ffprobe.exe
 ffplay.exe
 ffmpeg.exe
+node_modules
+testing
+logs
