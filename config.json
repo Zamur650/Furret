@@ -3,10 +3,10 @@
   "prefix": "$",
   "welcomeChannel": "зашли-на-сервер",
   "backgroundWelcomeImageName": "wallpaper.png",
-  "developer": "Алексiй#5027",
-  "developerImage": "https://cdn.discordapp.com/avatars/586128640136445964/34d50abe26874eccfbe1380a3bad707e.webp",
+  "developerID": "586128640136445964",
   "fortuneBall": ["zamur650.github.io/luckypokeball/images/yes.png", "zamur650.github.io/luckypokeball/images/no.png"],
   "webLink": "zamur650.github.io/furret",
+  "twitchLink": "https://www.twitch.tv/zamur650",
   "botColor": "#ffcc99",
   "starEmoji": ":star:",
   "warframeLanguage": "ru"

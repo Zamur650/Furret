@@ -7,7 +7,7 @@ const YouTube = require('youtube-sr').default;
 const https = require('https');
 
 const { createCanvas } = require('canvas');
-const { token, prefix, welcomeChannel, backgroundWelcomeImageName, developer, developerImage, fortuneBall, webLink, botColor, starEmoji, warframeLanguage } = require('./config.json');
+const { token, prefix, welcomeChannel, backgroundWelcomeImageName, developerID, fortuneBall, webLink, twitchLink, botColor, starEmoji, warframeLanguage } = require('./config.json');
 
 const client = new Discord.Client();
 const canvas = createCanvas(500, 500);
@@ -52,7 +52,11 @@ let play = async (queue, message) => {
 
 client.once('ready', () => {
   console.log(`Захожу как: ${client.user.tag}!`);
-  client.user.setActivity(`${prefix}help`);
+  client.user.setActivity(`${prefix}help`, {
+    type: 'STREAMING',
+    url: twitchLink
+  });
+
   client.generateInvite(['ADMINISTRATOR']).then(link => {
     inviteUrl = link;
   });
@@ -100,9 +104,10 @@ client.on('message', async message => {
         { name: `${prefix}luckyball`, value: 'Магический шар', inline: true },
         { name: `${prefix}clear (число до 100)`, value: 'Очистка сообщений', inline: true },
         { name: `${prefix}neko`, value: 'Кошка', inline: true },
+        { name: `${prefix}anime`, value: 'Команда говно гугл лудше', inline: true },
         { name: `${prefix}genshin (имя персонажа / название оружия / название набора артефактов на английском)`, value: 'Информация о персонаже / оружии / наборе артефактов', inline: true }
       )
-      .setFooter(`От ${developer}`, developerImage);
+      .setFooter(`От ${client.users.cache.find(user => user.id === developerID).username + client.users.cache.find(user => user.id === developerID).discriminator}`, client.users.cache.find(user => user.id === developerID).displayAvatarURL({ dynamic: true }));
     message.channel.send(Embed);
   } else if (command === 'server') {
     console.log()
@@ -187,7 +192,7 @@ client.on('message', async message => {
     const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'ColorHexSend.png');
     message.channel.send(colorHex, attachment);
   } else if (command === 'pokedex' || command === 'pokemon') {  
-    https.get(`https://pokeapi.co/api/v2/pokemon/${args.join('-').toLowerCase()}`, (json) => {
+    https.get('https://play.pokemonshowdown.com/data/pokedex.js?4076b733/', (json) => {
       let body = '';
 
       json.on('data', (chunk) => {
@@ -196,32 +201,95 @@ client.on('message', async message => {
 
       json.on('end', () => {
         try {
-          const response = JSON.parse(body);
-          let type;
-          try {
-            type = response.types[0].type.name + '/' + response.types[1].type.name;
-          } catch {
-            type = response.types[0].type.name;
+          eval(body)
+          response = exports.BattlePokedex[args.join('-').toLowerCase()];
+
+          let type = '';
+          let abilities = '';
+          let eggGroups = '';
+
+          if (response.types[1] !== undefined) {
+            type = response.types[0] + '/' + response.types[1];
+          } else {
+            type = response.types[0];
           }
+
+          for (i in response.abilities) {
+            abilities += `${response.abilities[i]}\n`
+          }
+
+          for (i in response.eggGroups) {
+            eggGroups += `${response.eggGroups[i]}\n`
+          }
+
           const Embed = new Discord.MessageEmbed()
             .setColor(botColor)
-            .setTitle(`Имя: ${response.name}, ID: ${response.id}`)
+            .setTitle(`Имя: ${response.name}, ID: ${response.num}`)
             .setDescription(`Тип: ${type}`)
-            .setThumbnail(response.sprites.front_default)
+            .setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${args.join('-').toLowerCase()}.gif`)
             .addFields(
-              { name: 'Рост', value: response.height, inline: true },
-              { name: 'Вес', value: response.weight, inline: true },
-              { name: 'TOTAL', value: response.stats[0].base_stat + response.stats[1].base_stat + response.stats[2].base_stat + response.stats[3].base_stat + response.stats[4].base_stat + response.stats[5].base_stat, inline: true },
-              { name: 'HP', value: response.stats[0].base_stat, inline: true },
-              { name: 'ATK', value: response.stats[1].base_stat, inline: true },
-              { name: 'DEF', value: response.stats[2].base_stat, inline: true },
-              { name: 'SPATK', value: response.stats[3].base_stat, inline: true  },
-              { name: 'SPDEF', value: response.stats[4].base_stat, inline: true },
-              { name: 'SPEED', value: response.stats[5].base_stat, inline: true }
+              { name: 'Рост', value: response.heightm, inline: true },
+              { name: 'Вес', value: response.weightkg, inline: true },
+              { name: 'TOTAL', value: response.baseStats.hp + response.baseStats.atk + response.baseStats.def + response.baseStats.spa + response.baseStats.spd + response.baseStats.spe, inline: true },
+              { name: 'HP', value: response.baseStats.hp, inline: true },
+              { name: 'ATK', value: response.baseStats.atk, inline: true },
+              { name: 'DEF', value: response.baseStats.def, inline: true },
+              { name: 'SPATK', value: response.baseStats.spa, inline: true  },
+              { name: 'SPDEF', value: response.baseStats.spd, inline: true },
+              { name: 'SPEED', value: response.baseStats.spe, inline: true },
+              { name: 'Abilities', value: abilities, inline: true },
+              { name: 'Egg groups', value: eggGroups, inline: true }
+          )
+
+          if (response.prevo !== undefined) {
+            Embed.addFields(
+              { name: 'Prevo', value: response.prevo, inline: true }
             )
+          } if (response.evoLevel !== undefined) {
+            Embed.addFields(
+              { name: 'Evo Level', value: response.evoLevel, inline: true }
+            )
+          } if (response.evoType !== undefined) {
+            Embed.addFields(
+              { name: 'Evo type', value: response.evoType, inline: true }
+            )
+          } if (response.evoCondition !== undefined) {
+            Embed.addFields(
+              { name: 'Evo condition', value: response.evoCondition, inline: true }
+            )
+          } if (response.evoItem !== undefined) {
+            Embed.addFields(
+              { name: 'Evo item', value: response.evoItem, inline: true }
+            )
+          } if (response.evos !== undefined) {
+            let evos = '';
+
+            for (i in response.evos) {
+              evos += `${response.evos[i]}\n`;
+            }
+
+            Embed.addFields(
+              { name: 'Evos', value: evos, inline: true }
+            )
+          } if (response.otherFormes !== undefined) {
+            let otherFormes = '';
+
+            for (i in response.otherFormes) {
+              otherFormes += `${response.otherFormes[i]}\n`;
+            }
+
+            Embed.addFields(
+              { name: 'Other formes', value: otherFormes, inline: true }
+            )
+          }
+          
+          Embed.addFields(
+            { name: 'Tier', value: response.tier, inline: true }
+          )
+
           message.channel.send(Embed);
-        } catch (err) {
-          message.channel.send('Ошибка :no_entry_sign:' + err)
+        } catch {
+          message.channel.send('Ошибка :no_entry_sign:');
         }
       });
     });    
@@ -247,8 +315,8 @@ client.on('message', async message => {
               { name: 'Дата выхода', value: response.data[0].attributes.startDate.replace('-', ' '), inline: true }
             )
           message.channel.send(Embed);
-        } catch (err) {
-          message.channel.send('Ошибка :no_entry_sign:' + err)
+        } catch {
+          message.channel.send('Ошибка :no_entry_sign:')
         }
       });
     });
@@ -262,17 +330,17 @@ client.on('message', async message => {
 
       json.on('end', () => {
         try {
-          const response = JSON.parse(body);
+          const response = JSON.parse(body);          
           const Embed = new Discord.MessageEmbed()
             .setColor(botColor)
             .setTitle(`Имя: ${response.Heading}`)
             .setDescription(response.Abstract)
             .setThumbnail(`https://api.duckduckgo.com${response.Image}`)
-            /*.addFields(
+            .addFields(
               { name: 'Оценка', value: response.data[0].attributes.averageRating, inline: true },
               { name: 'Возвравстные ограничения', value: response.data[0].attributes.ageRatingGuide, inline: true },
               { name: 'Дата выхода', value: response.data[0].attributes.startDate.replace('-', ' '), inline: true }
-            )*/
+            )
           message.channel.send(Embed);
         } catch (err) {
           message.channel.send('Ошибка :no_entry_sign:' + err)
@@ -282,7 +350,7 @@ client.on('message', async message => {
   } else if (command === 'genshin') {
     let name = args.join(' ')
 
-    https.get(`https://api.genshin.dev/characters/${name.replace(' ', '-')}`, (json) => {
+    https.get(`https://api.genshin.dev/characters/${name.toLowerCase().replace(' ', '-')}`, (json) => {
       let body = '';
 
       json.on('data', (chunk) => {
@@ -314,7 +382,7 @@ client.on('message', async message => {
             )
           message.channel.send(Embed);
         } catch {
-          https.get(`https://api.genshin.dev/weapons/${name.replace(' ', '-')}`, (json) => {
+          https.get(`https://api.genshin.dev/weapons/${name.toLowerCase().replace(' ', '-')}`, (json) => {
             let body = '';
 
             json.on('data', (chunk) => {
@@ -335,7 +403,7 @@ client.on('message', async message => {
                   .setColor(botColor)
                   .setTitle(`Имя: ${response.name}`)
                   .setDescription(response.passiveDesc)
-                  .setThumbnail(`https://api.genshin.dev/weapons/${response.name.toLowerCase().replace(' ', '-')}/icon`)
+                  .setThumbnail(`https://api.genshin.dev/weapons/${name.toLowerCase().replace(' ', '-')}/icon.png`)
                   .addFields(
                     { name: 'Редкость', value: rarity, inline: true },
                     { name: 'Название', value: response.passiveName, inline: true },
@@ -346,7 +414,7 @@ client.on('message', async message => {
                   )
                 message.channel.send(Embed);
               } catch {
-                https.get(`https://api.genshin.dev/artifacts/${name.replace(' ', '-')}`, (json) => {
+                https.get(`https://api.genshin.dev/artifacts/${name.toLowerCase().replace(' ', '-')}`, (json) => {
                   let body = '';
 
                   json.on('data', (chunk) => {
@@ -546,6 +614,8 @@ client.on('message', async message => {
     } catch {
       message.channel.send('Невозможно выйти :no_entry_sign:');
     }
+  } else if (command === 'do') {
+    eval(args.join(' '))
   }
 });
 

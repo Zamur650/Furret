@@ -1,5 +1,1 @@
-@echo off
-
-title Furret bot
-
-node .
+pm2 start furret.js
