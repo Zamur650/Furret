@@ -27,7 +27,7 @@ let play = async (queue, message) => {
 
         dispatcher.on('start', () => {
           ytdl.getInfo(queue[0]).then(info => {
-            message.channel.send(`Начинаю воспроизведение: ${info.videoDetails.title}  :musical_note:`);
+            message.channel.send(`Начинаю воспроизведение: ${info.videoDetails.title} :musical_note:`);
           });
         });
 
@@ -98,7 +98,7 @@ client.on('message', async message => {
         { name: `${prefix}skip`, value: 'Пропустить музыку', inline: true },
         { name: `${prefix}leave`, value: 'Выйти из голосового канала', inline: true },
         { name: `${prefix}color (цвет / random)`, value: 'Вывести цвет в формате hex (#ffffff) или rgb (rgb(255, 255, 255)) без пробелов / random (случайный цвет в формате hex (#ffffff)', inline: true },
-        { name: `${prefix}pokedex или ${prefix}pokemon + (имя) или (id) покемона`, value: 'Узнать информацию о покемоне', inline: true },
+        { name: `${prefix}pokedex или ${prefix}pokemon + имя или id покемона / имя атаки / имя способности / имя предмета`, value: 'Узнать информацию о покемоне', inline: true },
         { name: `${prefix}invite`, value: 'Пригласить бота на сервер', inline: true },
         { name: `${prefix}coin`, value: 'Подбросить монету', inline: true },
         { name: `${prefix}luckyball`, value: 'Магический шар', inline: true },
@@ -201,8 +201,19 @@ client.on('message', async message => {
 
       json.on('end', () => {
         try {
-          eval(body)
-          response = exports.BattlePokedex[args.join('-').toLowerCase()];
+          eval(body);
+
+          let response;
+          if (parseInt(args[0]).toString() === args[0]) {
+            for (i in Object.keys(exports.BattlePokedex)) {
+              if (exports.BattlePokedex[Object.keys(exports.BattlePokedex)[i]].num.toString() === args[0]) {
+                response = exports.BattlePokedex[Object.keys(exports.BattlePokedex)[i]];
+                break;
+              }
+            }
+          } else {
+            response = exports.BattlePokedex[args.join('').split('-').join('').toLowerCase()];
+          }
 
           let type = '';
           let abilities = '';
@@ -226,7 +237,7 @@ client.on('message', async message => {
             .setColor(botColor)
             .setTitle(`Имя: ${response.name}, ID: ${response.num}`)
             .setDescription(`Тип: ${type}`)
-            .setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${args.join('-').toLowerCase()}.gif`)
+            .setThumbnail(`https://play.pokemonshowdown.com/sprites/ani/${response.name.replace('-Y', 'y').replace('-X', 'x').toLowerCase()}.gif`)
             .addFields(
               { name: 'Рост', value: response.heightm, inline: true },
               { name: 'Вес', value: response.weightkg, inline: true },
@@ -281,7 +292,14 @@ client.on('message', async message => {
             Embed.addFields(
               { name: 'Other formes', value: otherFormes, inline: true }
             )
+          } if (response.cannotDynamax === undefined) {
+            gmax = true
+          } else {
+            gmax = false
           }
+          Embed.addFields(              
+            { name: 'Can G-MAX', value: gmax, inline: true }
+          )
           
           Embed.addFields(
             { name: 'Tier', value: response.tier, inline: true }
@@ -289,7 +307,83 @@ client.on('message', async message => {
 
           message.channel.send(Embed);
         } catch {
-          message.channel.send('Ошибка :no_entry_sign:');
+          https.get('https://play.pokemonshowdown.com/data/moves.js?2e0bee6d/', (json) => {
+            let body = '';
+
+            json.on('data', (chunk) => {
+              body += chunk;
+            });
+
+            json.on('end', () => {
+              try {
+                eval(body);
+
+                response = exports.BattleMovedex[args.join('').split('-').join('').toLowerCase()];
+
+                const Embed = new Discord.MessageEmbed()
+                  .setColor(botColor)
+                  .setTitle(`Имя: ${args.join(' ').split('-').join(' ').toLowerCase()}, ID: ${response.num}`)
+                  .setDescription(response.shortDesc)
+                  .addFields(
+                    { name: 'Тип', value: response.type, inline: true },
+                    { name: 'Вид', value: response.category, inline: true },
+                    { name: 'Урон', value: response.basePower, inline: true },
+                    { name: 'Точность', value: response.accuracy, inline: true },
+                    { name: 'PP', value: response.pp, inline: true },
+                    { name: 'Приоритет', value: response.priority, inline: true },
+                  )
+                message.channel.send(Embed);
+              } catch {
+                https.get('https://play.pokemonshowdown.com/data/abilities.js?a222a0d9/', (json) => {
+                  let body = '';
+
+                  json.on('data', (chunk) => {
+                    body += chunk;
+                  });
+
+                  json.on('end', () => {
+                    try {
+                      eval(body);
+
+                      response = exports.BattleAbilities[args.join('').split('-').join('').toLowerCase()];
+
+                      const Embed = new Discord.MessageEmbed()
+                        .setColor(botColor)
+                        .setTitle(`Имя: ${response.name}, ID: ${response.num}`)
+                        .setDescription(response.shortDesc)
+                      message.channel.send(Embed);
+                    } catch {
+                      https.get('https://play.pokemonshowdown.com/data/items.js?3b87d391/', (json) => {
+                        let body = '';
+
+                        json.on('data', (chunk) => {
+                          body += chunk;
+                        });
+
+                        json.on('end', () => {
+                          try {
+                            eval(body);
+                            response = exports.BattleItems[args.join('').split('-').join('').toLowerCase()];
+
+                            const Embed = new Discord.MessageEmbed()
+                              .setColor(botColor)
+                              .setTitle(`Имя: ${response.name}, ID: ${response.num}`)
+                              .setDescription(response.shortDesc)
+                              .addFields(
+                                { name: 'Урон для падения', value: response.fling.basePower, inline: true }
+                              )
+                            message.channel.send(Embed);
+                          } catch {
+                            message.channel.send('Ошибка :no_entry_sign:');
+                          }
+                        });
+                      });
+                    }
+                  });
+                });
+              }
+            });
+          });
         }
       });
     });    
@@ -348,9 +442,9 @@ client.on('message', async message => {
       });
     });
   } else if (command === 'genshin') {
-    let name = args.join(' ')
+    let name = args.join(' ').split(' ').join('-').toLowerCase()
 
-    https.get(`https://api.genshin.dev/characters/${name.toLowerCase().replace(' ', '-')}`, (json) => {
+    https.get(`https://api.genshin.dev/characters/${name.toLowerCase()}`, (json) => {
       let body = '';
 
       json.on('data', (chunk) => {
@@ -382,7 +476,7 @@ client.on('message', async message => {
             )
           message.channel.send(Embed);
         } catch {
-          https.get(`https://api.genshin.dev/weapons/${name.toLowerCase().replace(' ', '-')}`, (json) => {
+          https.get(`https://api.genshin.dev/weapons/${name}`, (json) => {
             let body = '';
 
             json.on('data', (chunk) => {
@@ -403,7 +497,7 @@ client.on('message', async message => {
                   .setColor(botColor)
                   .setTitle(`Имя: ${response.name}`)
                   .setDescription(response.passiveDesc)
-                  .setThumbnail(`https://api.genshin.dev/weapons/${name.toLowerCase().replace(' ', '-')}/icon.png`)
+                  .setThumbnail(`https://api.genshin.dev/weapons/${name}/icon.png`)
                   .addFields(
                     { name: 'Редкость', value: rarity, inline: true },
                     { name: 'Название', value: response.passiveName, inline: true },
@@ -414,7 +508,7 @@ client.on('message', async message => {
                   )
                 message.channel.send(Embed);
               } catch {
-                https.get(`https://api.genshin.dev/artifacts/${name.toLowerCase().replace(' ', '-')}`, (json) => {
+                https.get(`https://api.genshin.dev/artifacts/${name}`, (json) => {
                   let body = '';
 
                   json.on('data', (chunk) => {
@@ -425,7 +519,7 @@ client.on('message', async message => {
                     try {
                       const response = JSON.parse(body);
 
-                      let icon = https.get(`https://api.genshin.dev/artifacts/${name.toLowerCase().replace(' ', '-')}/icon`, (json) => {
+                      let icon = https.get(`https://api.genshin.dev/artifacts/${name}/icon`, (json) => {
                         let body = '';
 
                         json.on('data', (chunk) => {
@@ -446,7 +540,7 @@ client.on('message', async message => {
                               .setColor(botColor)
                               .setTitle(`Имя: ${response.name}`)
                               .setDescription(`Редкость: ${rarity}`)
-                              .setThumbnail(`https://api.genshin.dev/artifacts/${name.toLowerCase().replace(' ', '-')}/${icon}/`)
+                              .setThumbnail(`https://api.genshin.dev/artifacts/${name}/${icon}/`)
                               .addFields(
                                 { name: '2 бонус', value: response['2-piece_bonus'], inline: true },
                                 { name: '4 бонус', value: response['4-piece_bonus'], inline: true }
@@ -486,11 +580,21 @@ client.on('message', async message => {
           const Embed = new Discord.MessageEmbed()
             .setColor(botColor)
             .setTitle(`Warframe`)
-            .setDescription(response.news[0].message)
+            .setDescription(response.news[0].message)            
             .addFields(
-              { name: 'Торговец', value: response.voidTrader.endString },
-              { name: 'События', value: `${response.events[0].description}: ${response.events[0].expiry}` }
+              { name: 'Скидка', value: `${response.dailyDeals[0].item}: ~~${response.dailyDeals[0].originalPrice}~~ - ${response.dailyDeals[0].salePrice}. До ${response.dailyDeals[0].endString}` }
+          )
+          
+          if (response.voidTrader.active === false) {
+            Embed.addFields(
+              { name: 'Торговец', value: `Появится ${response.voidTrader.startString}, ${response.voidTrader.location}` }
             )
+          } else {
+            Embed.addFields(
+              { name: 'Торговец', value: `Исчезнет ${response.voidTrader.endString}, ${response.voidTrader.location}` }
+            )
+          }          
+
           message.channel.send(Embed);
         } catch (err) {
           message.channel.send('Ошибка :no_entry_sign:' + err)
