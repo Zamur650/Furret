@@ -10,11 +10,10 @@ const { createCanvas } = require('canvas');
 const { token, prefix, welcomeChannel, backgroundWelcomeImageName, developerID, fortuneBall, webLink, twitchLink, botColor, starEmoji, warframeLanguage } = require('./config.json');
 
 const client = new Discord.Client();
-const canvas = createCanvas(500, 500);
-const ctx = canvas.getContext('2d');
-
 const neko = new nekoLifeClient();
 let queue = [];
+let connection;
+let dispatcher;
 let battles = [];
 let inviteUrl;
 
@@ -22,8 +21,8 @@ let play = async (queue, message) => {
   try {
     if (queue[0] !== undefined) {
       if (message.member.voice.channel) {
-        const connection = await message.member.voice.channel.join();
-        const dispatcher = await connection.play(ytdl(queue[0], { type: 'opus' }));
+        connection = await message.member.voice.channel.join();
+        dispatcher = await connection.play(ytdl(queue[0], { type: 'opus' }));
 
         dispatcher.on('start', () => {
           ytdl.getInfo(queue[0]).then(info => {
@@ -44,7 +43,7 @@ let play = async (queue, message) => {
     } else {
       message.channel.send('В очереди ничего нет :no_entry_sign:');
     }
-  } catch (err) {
+  } catch {
     message.channel.send('Ошибка :no_entry_sign:');
     return;
   }
@@ -169,7 +168,10 @@ client.on('message', async message => {
       password += charset.charAt(Math.floor(Math.random() * n));
     }
     message.channel.send(`Пароль: ||${password}|| :keyboard:`);
-  } else if (command === 'color') {
+  } else if (command === 'color') {    
+    let canvas = createCanvas(500, 500);
+    let ctx = canvas.getContext('2d');
+
     let hexCharset = 'ABCDEF0123456789';
     let colorHex = args.join('');
     if (colorHex === 'random') {
@@ -712,7 +714,6 @@ client.on('message', async message => {
   } else if (command === 'leave') {
     try {
       queue = [];
-      const connection = await message.member.voice.channel.join();
       connection.disconnect();
       message.channel.send('Успешно вышел из канала! :door:');
     } catch {
