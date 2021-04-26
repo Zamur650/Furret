@@ -1,13 +1,13 @@
 {
-  "token": "NjYyNTMzNjg1NTg0ODU1MDUw.Xg7Wkw.5tsC_hwYsPVmG6rzEPyliWKvUbU",
-  "prefix": "$",
-  "welcomeChannel": "зашли-на-сервер",
-  "backgroundWelcomeImageName": "wallpaper.png",
-  "developerID": "586128640136445964",
-  "fortuneBall": ["zamur650.github.io/luckypokeball/images/yes.png", "zamur650.github.io/luckypokeball/images/no.png"],
-  "webLink": "zamur650.github.io/furret",
-  "twitchLink": "https://www.twitch.tv/zamur650",
-  "botColor": "#ffcc99",
-  "starEmoji": ":star:",
-  "warframeLanguage": "ru"
-}
+    "token": "NjYyNTMzNjg1NTg0ODU1MDUw.Xg7Wkw.5tsC_hwYsPVmG6rzEPyliWKvUbU",
+    "prefix": "$",
+    "welcomeChannel": "зашли-на-сервер",
+    "backgroundWelcomeImageName": "wallpaper.png",
+    "developerID": "586128640136445964",
+    "fortuneBall": ["zamur650.github.io/luckypokeball/images/yes.png", "zamur650.github.io/luckypokeball/images/no.png"],
+    "webLink": "zamur650.github.io/furret",
+    "twitchLink": "https://www.twitch.tv/zamur650",
+    "botColor": "#ffcc99",
+    "starEmoji": ":star:",
+    "warframeLanguage": "ru"
+  }
