@@ -1,25 +1,25 @@
 {
   "name": "furret",
   "version": "1.0.0",
-  "description": ":)",
+  "description": "Discord bot by Zamur650",
   "main": "index.js",
   "scripts": {
-    "start": "pm2 start index.js",
+    "start": "pm2 start index.js --name \"discordBot\"",
     "restart": "pm2 restart index.js",
     "npm_install": "npm i"
   },
-  "author": "Zamur",
+  "author": "Zamur650",
   "license": "ISC",
   "dependencies": {
     "avconv": "^3.1.0",
-    "canvas": "^2.6.1",
+    "canvas": "^2.7.0",
     "discord.js": "^12.5.1",
     "ffmpeg": "0.0.4",
     "ffmpeg-static": "^4.3.0",
+    "fs": "0.0.1-security",
     "nekos.life": "^2.0.7",
     "opusscript": "0.0.7",
-    "pokeapi-js-wrapper": "^1.2.0",
-    "youtube-sr": "^3.0.4",
+    "youtube-sr": "^4.0.4",
     "ytdl-core": "^4.5.0"
   }
 }

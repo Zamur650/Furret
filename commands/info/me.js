@@ -1,0 +1,50 @@
+const Discord = require('discord.js');
+
+const { botColor } = require('../../config.json');
+
+module.exports = {
+  name: 'me',
+  category: 'info',
+  description: 'Узнать информацию о себе',
+
+  /**
+   * @param {Client} client
+   * @param {Message} message
+   * @param {String[]} args
+   */
+
+  run: async(client, message, args) => {      
+    let channelEmbed = message.member.voice.channel;
+    let status = message.author.presence.status;
+    switch (status) {
+      case 'online':
+        status = ':green_circle: В сети';
+        break;
+      case 'idle':
+        status = ':crescent_moon: Не активен';
+        break;
+      case 'dnd':
+        status = ':red_circle: Не беспокоить';
+        break;
+      case 'offline':
+        status = ':black_circle: Не в сети';
+        break;
+    }
+    if (channelEmbed === null) {
+      channelEmbed = 'Не в канале';
+    }
+    const Embed = new Discord.MessageEmbed()
+      .setColor(botColor)
+      .setTitle(`Имя: ${message.author.username}#${message.author.discriminator}`)
+      .setURL()
+      .setDescription(`Участник сервера: ${message.guild.name}`)
+      .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
+      .addFields(
+        { name: 'Канал', value: channelEmbed },
+        { name: 'Статус', value: status },
+        { name: 'Id', value: message.author.id }
+      )
+    message.channel.send(Embed);    
+  }
+}
+

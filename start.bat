@@ -1,1 +1,1 @@
-pm2 start furret.js
+npm start
