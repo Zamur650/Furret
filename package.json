@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start": "pm2 start index.js --name \"discordBot\"",
-    "restart": "pm2 restart index.js",
     "npm_install": "npm i"
   },
   "author": "Zamur650",

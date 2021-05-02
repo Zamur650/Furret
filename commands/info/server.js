@@ -17,12 +17,14 @@ module.exports = {
     let embed = new Discord.MessageEmbed()
       .setColor(botColor)
       .setTitle('Информация о сервере')
-      .setImage(message.guild.iconURL)
-      .setDescription(`${message.guild}`)
+      .setImage(`https://cdn.discordapp.com/icons/${message.guild.id}/${message.guild.icon}.png`)
+      .setDescription(message.guild)
       .addField('Владелец', `Владелец сервера: ${message.guild.owner}`)
       .addField('Количество участинков', `На этом сервере ${message.guild.memberCount} участников`)
       .addField('Количество смайликов', `На этом сервере ${message.guild.emojis.cache.size} смайликов`)
       .addField('Количество ролей', `На этом сервере ${message.guild.roles.cache.size} ролей`)
+      .addField('Id', message.guild.id)
     message.channel.send(embed);
+    console.log(message.guild);
   }
 }
