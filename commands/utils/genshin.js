@@ -128,7 +128,7 @@ module.exports = {
                           });
                         });  
                       } catch {
-                        message.channel.send('Ошибка :no_entry_sign:')
+                        message.channel.send('Ошибка :no_entry_sign:');
                       }
                     });
                   });
@@ -139,7 +139,7 @@ module.exports = {
         });
       });
     } catch {
-      message.channel.send('Ошибка :no_entry_sign:')
+      message.channel.send('Ошибка :no_entry_sign:');
     }
   }
 }
