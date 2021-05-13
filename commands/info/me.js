@@ -36,7 +36,6 @@ module.exports = {
     const Embed = new Discord.MessageEmbed()
       .setColor(botColor)
       .setTitle(`Имя: ${message.author.username}#${message.author.discriminator}`)
-      .setURL()
       .setDescription(`Участник сервера: ${message.guild.name}`)
       .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
       .addFields(
