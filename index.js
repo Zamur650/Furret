@@ -40,7 +40,7 @@ global.play = async (queue, message) => {
   } else {
     message.channel.send('В очереди ничего нет :no_entry_sign:');
   }
-};
+}
 
 ['command'].forEach(handler => {
   require(`./handlers/${handler}`)(client);
