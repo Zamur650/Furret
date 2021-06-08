@@ -23,17 +23,18 @@ module.exports = {
           .setTitle(response.username)
           .setDescription(response.hitAccuracy)
           .addFields(
-            { name: 'Игр', value: response.playCount },
-            { name: 'Всего попаданий', value: response.totalHits },
-            { name: 'Максимальное комбо', value: response.maximumCombo },
-            { name: 'Уровень', value: response.level },
-            { name: 'Прогресс до следующего уровня', value: response.progressToNextLevel },
-            { name: 'Страна', value: response.country },
-            { name: 'Ранк мира', value: response.globalRank },
-            { name: 'Ранк страны', value: response.countryRank },
-            { name: 'Время', value: response.playTime },
-            { name: 'Медали', value: response.medals }
+            { name: 'Игр', value: response.playCount, inline: true },
+            { name: 'Всего попаданий', value: response.totalHits, inline: true },
+            { name: 'Максимальное комбо', value: response.maximumCombo, inline: true },
+            { name: 'Уровень', value: response.level, inline: true },
+            { name: 'Прогресс до следующего уровня', value: response.progressToNextLevel, inline: true },
+            { name: 'Страна', value: response.country, inline: true },
+            { name: 'Ранк мира', value: response.globalRank, inline: true },
+            { name: 'Ранк страны', value: response.countryRank, inline: true },
+            { name: 'Время', value: response.playTime, inline: true },
+            { name: 'Медали', value: response.medals, inline: true }
           )
+          .setTimestamp()
         message.channel.send(embed);
       });
     } catch {

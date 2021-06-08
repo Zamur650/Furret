@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const https = require('https');
+const fetch = require('node-fetch');
 
 const { botColor, warframeLanguage } = require('../../config.json');
 
@@ -15,23 +15,17 @@ module.exports = {
    */
 
   run: async (client, message, args) => {
-    https.get(`https://api.warframestat.us/pc/${warframeLanguage}`, (json) => {
-      let body = '';
-
-      json.on('data', (chunk) => {
-        body += chunk;
-      });
-
-      json.on('end', () => {
-        const response = JSON.parse(body);
-
+    fetch(`https://api.warframestat.us/pc/${warframeLanguage}`)
+      .then(response => response.json())
+      .then(response => {
         const Embed = new Discord.MessageEmbed()
           .setColor(botColor)
           .setTitle(`Warframe`)
           .setDescription(response.news[0].message)            
           .addFields(
             { name: 'Скидка', value: `${response.dailyDeals[0].item}: ~~${response.dailyDeals[0].originalPrice}~~ - ${response.dailyDeals[0].salePrice}. До ${response.dailyDeals[0].endString}` }
-        )
+          )
+          .setTimestamp()
         
         if (response.voidTrader.active === false) {
           Embed.addFields(
@@ -45,6 +39,5 @@ module.exports = {
 
         message.channel.send(Embed);
       });
-    });
   }
 }
