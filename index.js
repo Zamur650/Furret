@@ -74,7 +74,7 @@ client.on('message', async message => {
     message.channel.send('Ошибка :no_entry_sign:' + e);
     throw e;
   });
-})
+});
 
 client.on('reconnecting', () => {
   console.log(`Перезашёл как: ${client.user.tag}!`);

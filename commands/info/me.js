@@ -35,7 +35,7 @@ module.exports = {
     }
     const Embed = new Discord.MessageEmbed()
       .setColor(botColor)
-      .setTitle(`Имя: ${message.author.username}#${message.author.discriminator}`)
+      .setTitle(`${message.author.username}#${message.author.discriminator}`)
       .setDescription(`Участник сервера: ${message.guild.name}`)
       .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
       .addFields(
@@ -43,6 +43,7 @@ module.exports = {
         { name: 'Статус', value: status },
         { name: 'Id', value: message.author.id }
       )
+      .setTimestamp()
     message.channel.send(Embed);    
   }
 }

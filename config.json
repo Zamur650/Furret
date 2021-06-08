@@ -1,10 +1,9 @@
 {
   "token": "NjYyNTMzNjg1NTg0ODU1MDUw.Xg7Wkw.5tsC_hwYsPVmG6rzEPyliWKvUbU",
   "prefix": "$",
-  "welcomeChannel": "зашли-на-сервер",
   "backgroundWelcomeImageName": "wallpaper.png",
   "developerID": "586128640136445964",
-  "fortuneBall": ["https://raw.githubusercontent.com/Zamur650/furretbotpage/main/luckypokeball/images/yes.png", "https://raw.githubusercontent.com/Zamur650/furretbotpage/main/luckypokeball/images/no.png"],
+  "fortuneBall": ["https://raw.githubusercontent.com/Zamur650/discord-bot-page/main/luckypokeball/images/yes.png", "https://raw.githubusercontent.com/Zamur650/discord-bot-page/main/luckypokeball/images/no.png"],
   "webLink": "https://zamur650.github.io/furret",
   "twitchLink": "https://www.twitch.tv/zamur650",
   "botColor": "#ffcc99",
