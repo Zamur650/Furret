@@ -7,12 +7,6 @@ module.exports = {
   category: 'fun',
   description: 'Кошка',
 
-  /**
-   * @param {Client} client
-   * @param {Message} message
-   * @param {String[]} args
-   */
-
   run: async(client, message, args) => {
     if (message.channel.nsfw) {
       neko.nsfw.nekoGif().then(imageJson => { message.channel.send(imageJson.url); });

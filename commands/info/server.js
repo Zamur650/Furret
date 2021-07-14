@@ -7,12 +7,6 @@ module.exports = {
   category: 'info',
   description: 'Информация о сервере',
 
-  /**
-   * @param {Client} client
-   * @param {Message} message
-   * @param {String[]} args
-   */
-
   run: async(client, message, args) => {
     let embed = new Discord.MessageEmbed()
       .setColor(botColor)

@@ -6,14 +6,8 @@ const { botColor } = require('../../config.json');
 module.exports = {
   name: 'search',
   aliases: ['request'],
-  category: 'utils',
+  category: 'api',
   description: 'Найти данные из википедии',
-
-  /**
-   * @param {Client} client
-   * @param {Message} message
-   * @param {String[]} args
-   */
 
   run: async (client, message, args) => {
     try {

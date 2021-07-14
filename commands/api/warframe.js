@@ -5,14 +5,8 @@ const { botColor, warframeLanguage } = require('../../config.json');
 
 module.exports = {
   name: 'warframe',
-  category: 'utils',
+  category: 'api',
   description: 'Получить данные из Warframe',
-
-  /**
-   * @param {Client} client
-   * @param {Message} message
-   * @param {String[]} args
-   */
 
   run: async (client, message, args) => {
     fetch(`https://api.warframestat.us/pc/${warframeLanguage}`)

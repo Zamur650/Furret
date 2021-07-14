@@ -7,12 +7,6 @@ module.exports = {
   category: 'utils',
   description : 'Проверка команды в Pokemon showdown',
 
-  /**
-   * @param {Client} client
-   * @param {Message} message
-   * @param {String[]} args
-   */
-
   run: async(client, message, args) => {
     const validator = new Sim.TeamValidator(args[0]);
     const teamCode = args.slice(1, args.length).join(' ');
@@ -24,8 +18,6 @@ module.exports = {
     for (let i = 0; i < jsonTeam.length; i++) {
       jsonTeam[i].species = jsonTeam[i].name
     }
-
-    console.log(jsonTeam)
 
     let output = validator.validateTeam(jsonTeam);
     message.channel.send(output);

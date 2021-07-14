@@ -6,14 +6,8 @@ const { botColor } = require('../../config.json');
 module.exports = {
   name: 'anime',
   aliases: ['name'],
-  category: 'utils',
+  category: 'api',
   description: 'Найти аниме',
-
-  /**
-   * @param {Client} client
-   * @param {Message} message
-   * @param {String[]} args
-   */
 
   run: async (client, message, args) => {
     fetch(`https://kitsu.io/api/edge/anime?filter[text]=${args.join('%20')}`)

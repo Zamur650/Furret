@@ -3,12 +3,6 @@ module.exports = {
   category: 'utils',
   description: 'Пригласить бота на сервер',
 
-  /**
-   * @param {Client} client
-   * @param {Message} message
-   * @param {String[]} args
-   */
-
   run: async(client, message, args) => {
     client.generateInvite({
       permissions: ['ADMINISTRATOR'],

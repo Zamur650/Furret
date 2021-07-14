@@ -6,14 +6,8 @@ const { botColor } = require('../../config.json');
 module.exports = {
   name: 'github',
   aliases: ['name'],
-  category: 'utils',
+  category: 'api',
   description: 'Получить данные пользователя из Github',
-
-  /**
-   * @param {Client} client
-   * @param {Message} message
-   * @param {String[]} args
-   */
 
   run: async (client, message, args) => {
     fetch(`https://api.github.com/users/${args.join('%20')}`)

@@ -6,19 +6,13 @@ const { botColor } = require('../../config.json');
 module.exports = {
   name: 'azln',
   aliases: ['name'],
-  category: 'utils',
+  category: 'api',
   description: 'Получить данные о корабле из Azur Lane',
-
-  /**
-   * @param {Client} client
-   * @param {Message} message
-   * @param {String[]} args
-   */
 
   run: async (client, message, args) => {
     let request = args.join('_')
     
-    fetch(`https://github.com/alg-wiki/wikia/blob/master/Ships/${request}.json`)
+    fetch(`https://raw.githubusercontent.com/alg-wiki/wikia/master/Ships/${request}.json`)
     .then(response => response.json())
     .then(response => {
       const Embed = new Discord.MessageEmbed()
@@ -26,7 +20,6 @@ module.exports = {
         .setTitle(response.name)
         .setURL(`https://azurlane.koumakan.jp/${request}`)
         .setDescription(response.rarity)
-        //.setThumbnail(response.avatar_url)
         .addFields(
           { name: 'ID', value: response.ID, inline: true },
           { name: 'Корпус', value: response.hull, inline: true },

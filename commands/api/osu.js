@@ -6,14 +6,8 @@ const { botColor } = require('../../config.json');
 module.exports = {
   name: 'osu',
   aliases: ['name'],
-  category: 'utils',
+  category: 'api',
   description: 'Информация о игроке из OSU!',
-
-  /**
-   * @param {Client} client
-   * @param {Message} message
-   * @param {String[]} args
-   */
 
   run: async (client, message, args) => {
     try {
