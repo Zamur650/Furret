@@ -6,14 +6,8 @@ const { botColor } = require('../../config.json');
 module.exports = {
   name: 'pokedex',
   aliases: ['name'],
-  category: 'utils',
+  category: 'api',
   description: 'Узнать информацию о покемоне / атаке / способности / предмете',
-
-  /**
-   * @param {Client} client
-   * @param {Message} message
-   * @param {String[]} args
-   */
 
   run: async(client, message, args) => {
     https.get('https://play.pokemonshowdown.com/data/pokedex.js?4076b733/', (json) => {

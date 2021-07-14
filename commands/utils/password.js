@@ -3,12 +3,6 @@ module.exports = {
   category: 'utils',
   description : 'Генерация паролей',
 
-  /**
-   * @param {Client} client
-   * @param {Message} message
-   * @param {String[]} args
-   */
-
   run: async(client, message, args) => {
     let charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let password = '';

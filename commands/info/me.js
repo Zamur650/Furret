@@ -7,12 +7,6 @@ module.exports = {
   category: 'info',
   description: 'Узнать информацию о себе',
 
-  /**
-   * @param {Client} client
-   * @param {Message} message
-   * @param {String[]} args
-   */
-
   run: async(client, message, args) => {      
     let channelEmbed = message.member.voice.channel;
     let status = message.author.presence.status;

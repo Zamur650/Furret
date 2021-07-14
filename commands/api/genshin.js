@@ -6,14 +6,8 @@ const { botColor, starEmoji } = require('../../config.json');
 module.exports = {
   name: 'genshin',
   aliases: ['name'],
-  category: 'utils',
+  category: 'api',
   description: 'Информация о персонаже / оружии / наборе артефактов',
-
-  /**
-   * @param {Client} client
-   * @param {Message} message
-   * @param {String[]} args
-   */
 
   run: async (client, message, args) => {
     try {
@@ -40,7 +34,7 @@ module.exports = {
               .setColor(botColor)
               .setTitle(`Имя: ${response.name}`)
               .setDescription(response.description)
-              .setThumbnail(`https://rerollcdn.com/GENSHIN/Characters/${response.name.replace(' ', '%20')}.png`)
+              .setThumbnail(`https://api.genshin.dev/characters/${name}/icon.png`)
               .addFields(
                 { name: 'Редкость', value: rarity, inline: true },
                 { name: 'Регион', value: response.nation, inline: true },

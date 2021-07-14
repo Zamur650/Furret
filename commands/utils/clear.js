@@ -4,12 +4,6 @@ module.exports = {
   category: 'utils',
   description: 'Очистка сообщений',
 
-  /**
-   * @param {Client} client
-   * @param {Message} message
-   * @param {String[]} args
-   */
-
   run: async(client, message, args) => {
     let amount = args[0];
 

@@ -1,17 +1,12 @@
 const Discord = require('discord.js');
 const fetch = require('node-fetch');
+const FormData = require('form-data');
 
 module.exports = {
   name: 'tcgdex',
   aliases: ['name'],
-  category: 'utils',
+  category: 'api',
   description: 'Узнать информацию о карте из TCG',
-
-  /**
-   * @param {Client} client
-   * @param {Message} message
-   * @param {String[]} args
-   */
 
   run: async (client, message, args) => {
     fetch(`https://api.pokemontcg.io/v2/cards?q=name:${args.join('&%20').toLowerCase()}`)

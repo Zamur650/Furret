@@ -7,12 +7,6 @@ module.exports = {
   category: 'utils',
   description: 'Вывести цвет в формате hex (#ffffff) или rgb (rgb(255, 255, 255)) без пробелов / random (случайный цвет в формате hex (#ffffff)',
 
-  /**
-   * @param {Client} client
-   * @param {Message} message
-   * @param {String[]} args
-   */
-
   run: async(client, message, args) => {
     let canvas = Canvas.createCanvas(500, 500);
     let ctx = canvas.getContext('2d');

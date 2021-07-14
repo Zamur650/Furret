@@ -3,12 +3,6 @@ module.exports = {
   category : 'fun',
   description : 'Подбросить монету',
 
-  /**
-   * @param {Client} client
-   * @param {Message} message
-   * @param {String[]} args
-   */
-
   run : async(client, message, args) => {
     message.channel.send('Монета подбрасывается...')
     var random = Math.floor(Math.random() * 2);
