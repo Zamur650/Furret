@@ -1,4 +1,4 @@
-const { fortuneBall } = require('../../config.json');
+const { fortuneBall } = require('../../config.json')
 
 module.exports = {
   name: 'luckyball',
@@ -6,7 +6,8 @@ module.exports = {
   description: 'Магический шар',
 
   run: async(client, message, args) => {
-    let random = Math.floor(Math.random() * 2);
+    let random = Math.floor(Math.random() * 2)
+    
     message.channel.send(fortuneBall[random])
   }
 }

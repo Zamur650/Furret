@@ -1,6 +1,6 @@
-const nekoLifeClient = require('nekos.life');
+const nekoLifeClient = require('nekos.life')
 
-const neko = new nekoLifeClient();
+const neko = new nekoLifeClient()
 
 module.exports = {
   name: 'neko',
@@ -9,9 +9,11 @@ module.exports = {
 
   run: async(client, message, args) => {
     if (message.channel.nsfw) {
-      neko.nsfw.nekoGif().then(imageJson => { message.channel.send(imageJson.url); });
+      image = (await neko.nsfw.nekoGif()).url
     } else {
-      neko.sfw.neko().then(imageJson => { message.channel.send(imageJson.url); });
+      image = (await neko.sfw.neko()).url
     }
+
+    message.channel.send(image)
   }
 }

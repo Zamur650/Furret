@@ -2,9 +2,10 @@
   "name": "furret",
   "version": "1.0.0",
   "description": "Discord bot by Zamur650",
-  "main": "index.js",
+  "main": "./index.js",
   "scripts": {
-    "start": "pm2 start index.js --name \"discordBot\"",
+    "start": "node .",
+    "pm2": "pm2 start . --name \"discordBot\"",
     "npm_install": "npm i"
   },
   "author": "Zamur650",
@@ -16,6 +17,7 @@
     "ffmpeg": "0.0.4",
     "ffmpeg-static": "^4.4.0",
     "fs": "0.0.1-security",
+    "html-to-text": "^8.0.0",
     "koffing": "^0.4.0",
     "nekos.life": "^2.0.7",
     "opusscript": "0.0.7",

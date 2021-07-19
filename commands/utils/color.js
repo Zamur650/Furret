@@ -1,5 +1,5 @@
-const Discord = require('discord.js');
-const Canvas = require('canvas');
+const Discord = require('discord.js')
+const Canvas = require('canvas')
 
 module.exports = {
   name: 'color',
@@ -8,29 +8,29 @@ module.exports = {
   description: 'Вывести цвет в формате hex (#ffffff) или rgb (rgb(255, 255, 255)) без пробелов / random (случайный цвет в формате hex (#ffffff)',
 
   run: async(client, message, args) => {
-    let canvas = Canvas.createCanvas(500, 500);
-    let ctx = canvas.getContext('2d');
+    let canvas = Canvas.createCanvas(500, 500)
+    let ctx = canvas.getContext('2d')
 
-    let hexCharset = 'ABCDEF0123456789';
-    let colorHex = args.join('');
+    let hexCharset = 'ABCDEF0123456789'
+    let colorHex = args.join('')
     if (colorHex === 'random') {
-      colorHex = '#';
+      colorHex = '#'
       for (let i = 0, n = hexCharset.length; i < 6; ++i) {
-        colorHex += hexCharset.charAt(Math.floor(Math.random() * n));
+        colorHex += hexCharset.charAt(Math.floor(Math.random() * n))
       }
     }
 
-    ctx.fillStyle = colorHex;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.font = '30px Arial';
-    ctx.fillStyle = '#ffffff';
-    ctx.textAlign = 'center';
-    ctx.fillText(colorHex, 250, 200);
-    ctx.font = '30px Arial';
-    ctx.fillStyle = '#000000';
-    ctx.textAlign = 'center';
-    ctx.fillText(colorHex, 250, 300);
-    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'ColorHexSend.png');
-    message.channel.send(colorHex, attachment);
+    ctx.fillStyle = colorHex
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    ctx.font = '30px Arial'
+    ctx.fillStyle = '#ffffff'
+    ctx.textAlign = 'center'
+    ctx.fillText(colorHex, 250, 200)
+    ctx.font = '30px Arial'
+    ctx.fillStyle = '#000000'
+    ctx.textAlign = 'center'
+    ctx.fillText(colorHex, 250, 300)
+    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'ColorHexSend.png')
+    message.channel.send(colorHex, attachment)
   }
 }

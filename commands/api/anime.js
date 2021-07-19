@@ -1,7 +1,7 @@
-const Discord = require('discord.js');
-const fetch = require('node-fetch');
+const Discord = require('discord.js')
+const fetch = require('node-fetch')
 
-const { botColor } = require('../../config.json');
+const { botColor } = require('../../config.json')
 
 module.exports = {
   name: 'anime',
@@ -26,7 +26,7 @@ module.exports = {
             { name: 'Длинна эпизодов', value: response.data[0].attributes.episodeLength, inline: true },
             { name: 'Дата выхода', value: response.data[0].attributes.startDate, inline: true }
           )
-        message.channel.send(Embed);
-      });
+        message.channel.send(Embed)
+      })
   }
 }
