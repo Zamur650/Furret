@@ -1,5 +1,5 @@
-const YouTube = require('youtube-sr').default;
-const ytdl = require('ytdl-core');
+const YouTube = require('youtube-sr').default
+const ytdl = require('ytdl-core')
 
 module.exports = {
   name: 'add',
@@ -9,13 +9,13 @@ module.exports = {
 
   run: async(client, message, args) => {
     if (ytdl.validateURL(args[0])) {
-      queue[queue.length] = args[0];
+      queue[queue.length] = args[0]
     } else {        
       YouTube.search(args.join('+'), { limit: 1 }).then(result => {
-        queue[queue.length] = result;
-      });  
+        queue[queue.length] = result
+      })  
     }
-    message.channel.send(`Добавил в очередь :musical_note:`);
+    message.channel.send(`Добавил в очередь :musical_note:`)
   }
 }
 

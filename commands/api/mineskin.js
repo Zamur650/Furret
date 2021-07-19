@@ -1,10 +1,11 @@
-const Discord = require('discord.js');
-const fetch = require('node-fetch');
+const Discord = require('discord.js')
+const fetch = require('node-fetch')
 
-const { botColor, warframeLanguage } = require('../../config.json');
+const { botColor, warframeLanguage } = require('../../config.json')
 
 module.exports = {
   name: 'mineskin',
+  aliases: ['name'],
   category: 'api',
   description: 'Получить данные из Warframe',
 
@@ -14,8 +15,8 @@ module.exports = {
     let usernames = ''
 
     response.username_history.forEach(usernameObject => {
-      usernames += usernameObject.username + '; '
-    });
+      usernames += usernameObject.username + ' '
+    })
 
     const Embed = new Discord.MessageEmbed()
       .setColor(botColor)
@@ -27,6 +28,6 @@ module.exports = {
       )
       .setTimestamp()
 
-    message.channel.send(Embed);
+    message.channel.send(Embed)
   }
 }

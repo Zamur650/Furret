@@ -6,6 +6,6 @@ module.exports = {
   run: async(client, message, args) => {
     client.generateInvite({
       permissions: ['ADMINISTRATOR'],
-    }).then(link => message.channel.send(link));
+    }).then(link => message.channel.send(link))
   }
 }

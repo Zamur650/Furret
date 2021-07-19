@@ -4,6 +4,6 @@ module.exports = {
   description: 'Запустить музыку из очереди',
 
   run: async(client, message, args) => {
-    play(queue, message);
+    play(queue, message)
   }
 }

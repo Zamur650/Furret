@@ -1,6 +1,6 @@
-const Discord = require('discord.js');
+const Discord = require('discord.js')
 
-const { botColor } = require('../../config.json');
+const { botColor } = require('../../config.json')
 
 module.exports = {
   name: 'server',
@@ -20,6 +20,6 @@ module.exports = {
         { name: 'Количество ролей', value: message.guild.roles.cache.size },
         { name: 'ID', value: message.guild.id }
       )
-    message.channel.send(embed);
+    message.channel.send(embed)
   }
 }

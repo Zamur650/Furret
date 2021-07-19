@@ -1,6 +1,6 @@
-const Discord = require('discord.js');
+const Discord = require('discord.js')
 
-const { botColor } = require('../../config.json');
+const { botColor } = require('../../config.json')
 
 module.exports = {
   name: 'me',
@@ -8,24 +8,24 @@ module.exports = {
   description: 'Узнать информацию о себе',
 
   run: async(client, message, args) => {      
-    let channelEmbed = message.member.voice.channel;
-    let status = message.author.presence.status;
+    let channelEmbed = message.member.voice.channel
+    let status = message.author.presence.status
     switch (status) {
       case 'online':
-        status = ':green_circle: В сети';
-        break;
+        status = ':green_circle: В сети'
+        break
       case 'idle':
-        status = ':crescent_moon: Не активен';
-        break;
+        status = ':crescent_moon: Не активен'
+        break
       case 'dnd':
-        status = ':red_circle: Не беспокоить';
-        break;
+        status = ':red_circle: Не беспокоить'
+        break
       case 'offline':
-        status = ':black_circle: Не в сети';
-        break;
+        status = ':black_circle: Не в сети'
+        break
     }
     if (channelEmbed === null) {
-      channelEmbed = 'Не в канале';
+      channelEmbed = 'Не в канале'
     }
     const Embed = new Discord.MessageEmbed()
       .setColor(botColor)
@@ -38,7 +38,7 @@ module.exports = {
         { name: 'Id', value: message.author.id }
       )
       .setTimestamp()
-    message.channel.send(Embed);    
+    message.channel.send(Embed)    
   }
 }
 

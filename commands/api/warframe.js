@@ -1,7 +1,7 @@
-const Discord = require('discord.js');
-const fetch = require('node-fetch');
+const Discord = require('discord.js')
+const fetch = require('node-fetch')
 
-const { botColor, warframeLanguage } = require('../../config.json');
+const { botColor, warframeLanguage } = require('../../config.json')
 
 module.exports = {
   name: 'warframe',
@@ -10,6 +10,7 @@ module.exports = {
 
   run: async (client, message, args) => {
     let response = await (await fetch(`https://api.warframestat.us/pc/${warframeLanguage}`)).json()
+    
     const Embed = new Discord.MessageEmbed()
       .setColor(botColor)
       .setTitle(`Warframe`)
@@ -29,6 +30,6 @@ module.exports = {
       )
     }          
 
-    message.channel.send(Embed);
+    message.channel.send(Embed)
   }
 }

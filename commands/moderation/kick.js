@@ -1,6 +1,6 @@
-const Discord = require('discord.js');
-const fetch = require('node-fetch');
-const FormData = require('form-data');
+const Discord = require('discord.js')
+const fetch = require('node-fetch')
+const FormData = require('form-data')
 
 module.exports = {
   name: 'kick',
