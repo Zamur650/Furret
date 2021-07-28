@@ -46,7 +46,7 @@ global.play = async (queue, message) => {
 
 client.on('ready', () => {
   console.log(`Захожу как: ${client.user.tag}!`)
-  client.user.setActivity(`${prefix}help`, {
+  client.user.setActivity(`READ DESCRIPTION`, {
     type: 'STREAMING',
     url: twitchLink
   })
@@ -76,7 +76,7 @@ client.on('message', async message => {
 
 client.on('reconnecting', () => {
   console.log(`Перезашёл как: ${client.user.tag}!`)
-  client.user.setActivity(`${prefix}help`, {
+  client.user.setActivity(`READ DESCRIPTION`, {
     type: 'STREAMING',
     url: twitchLink
   })

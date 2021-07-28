@@ -43,7 +43,7 @@ module.exports = {
         .setDescription(
           `Используйте \`${prefix}help\` чтобы получить помощь. Например: \`${prefix}help me\`.`
         )
-        .setFooter(`От ${client.users.cache.find(user => user.id === developerID).username + client.users.cache.find(user => user.id === developerID).discriminator}`, client.users.cache.find(user => user.id === developerID).displayAvatarURL({ dynamic: true }))
+        .setFooter(`От ${client.users.cache.find(user => user.id === developerID).username}#${client.users.cache.find(user => user.id === developerID).discriminator}`, client.users.cache.find(user => user.id === developerID).displayAvatarURL({ dynamic: true }))
         .setTimestamp()
         .setColor(botColor)
       return message.channel.send(embed)
