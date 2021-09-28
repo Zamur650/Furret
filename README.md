@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="" rel="noopener">
+ <a href="" rel="noopener">
  <img width=200px height=200px src="./assets/icon.png" alt="Bot logo"></a>
 </p>
 
@@ -37,14 +37,16 @@ Check all commands
 
 ### Example:
 
->help
+```
+>coin
+```
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
 ### Prerequisites
 
 ```
-node >= 12 
+node >= 12
 ```
 
 ### Installing
