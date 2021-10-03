@@ -8,7 +8,7 @@
 ---
 
 <p align="center"> Bot for discord js 12.
-    <br> 
+    <br>
 </p>
 
 ## 📝 Table of Contents
@@ -35,7 +35,7 @@ Check all commands
 >help
 ```
 
-### Example:
+### Example
 
 ```
 >coin
