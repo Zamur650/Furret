@@ -53,17 +53,13 @@ node >= 12
 
 Install dependencies
 
-```
-npm i
-```
+`npm i` / `yarn` / `pnpm i`
 
 Start the bot
 
-```
-npm run start
-```
+`npm run start` / `yarn start` / `pnpm run start`
 
-Type prefix from .env + help to see all commands!
+Type `>help` to see all commands!
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 
