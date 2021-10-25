@@ -1,11 +1,12 @@
 {
 	"name": "furret",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "Discord bot by Zamur650",
 	"main": "./src/index.js",
 	"scripts": {
 		"start": "node .",
-		"prettier": "npx prettier --write ."
+		"format": "npx prettier --write .",
+		"lint": "eslint ./src --ext .js"
 	},
 	"author": "Zamur650",
 	"license": "MPL",
@@ -21,10 +22,12 @@
 		"nekos.life": "^2.0.7",
 		"node-fetch": "2.6.1",
 		"opusscript": "^0.0.8",
-		"youtube-sr": "^4.1.7",
+		"youtube-sr": "^4.1.8",
 		"ytdl-core": "^4.9.0"
 	},
 	"devDependencies": {
+		"eslint": "^8.1.0",
 		"prettier": "^2.4.1"
-	}
+	},
+	"packageManager": "yarn@3.0.2"
 }

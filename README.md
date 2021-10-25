@@ -5,8 +5,6 @@
 
 <h3 align="center">Furret</h3>
 
----
-
 <p align="center"> Bot for discord js 12.
     <br>
 </p>
@@ -14,7 +12,7 @@
 ## 📝 Table of Contents
 
 - [About](#about)
-- [Demo / Working](#demo)
+- [Demo](#demo)
 - [Usage](#usage)
 - [Getting Started](#getting_started)
 - [Acknowledgments](#acknowledgement)
@@ -23,7 +21,7 @@
 
 Multi purposes discord bot.
 
-## 🎥 Demo / Working <a name = "demo"></a>
+## 🎥 Demo <a name = "demo"></a>
 
 ![Working](assets/demo.png)
 
@@ -31,23 +29,17 @@ Multi purposes discord bot.
 
 Check all commands
 
-```
->help
-```
+`>help`
 
 ### Example
 
-```
->coin
-```
+`>coin`
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
 ### Prerequisites
 
-```
-node >= 12
-```
+`node >= 12`
 
 ### Installing
 
