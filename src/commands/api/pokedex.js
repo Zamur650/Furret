@@ -98,7 +98,11 @@ module.exports = {
 					},
 					{
 						name: 'Abilities',
-						value: response.abilities.join('\n'),
+						value: Object.entries(response.abilities)
+							.map((ability) =>
+								ability[0] != 'H' ? ability[1] : `(${ability[1]})`
+							)
+							.join('\n'),
 						inline: true
 					},
 					{
