@@ -29,11 +29,11 @@ Multi purposes discord bot.
 
 Check all commands
 
-`>help`
+`$help`
 
 ### Example
 
-`>coin`
+`$coin`
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
@@ -51,7 +51,7 @@ Start the bot
 
 `npm run start` / `yarn start` / `pnpm run start`
 
-Type `>help` to see all commands!
+Type `$help` to see all commands!
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 
