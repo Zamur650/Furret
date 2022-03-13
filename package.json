@@ -20,7 +20,7 @@
 		"ffmpeg-static": "5.0.0",
 		"html-to-text": "8.1.0",
 		"nekos.life": "2.0.9",
-		"node-fetch": "2.6.1",
+		"node-fetch": "2.6.7",
 		"opusscript": "0.0.8",
 		"youtube-sr": "4.1.15",
 		"ytdl-core": "4.11.0"
