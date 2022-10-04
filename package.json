@@ -13,22 +13,22 @@
 	"dependencies": {
 		"@iamtraction/google-translate": "1.1.2",
 		"avconv": "3.1.0",
-		"canvas": "2.9.0",
+		"canvas": "2.10.1",
 		"discord.js": "12.5.3",
-		"dotenv": "16.0.0",
+		"dotenv": "16.0.3",
 		"ffmpeg": "0.0.4",
-		"ffmpeg-static": "5.0.0",
-		"html-to-text": "8.1.0",
-		"nekos.life": "2.0.9",
-		"node-fetch": "2.6.7",
+		"ffmpeg-static": "5.1.0",
+		"html-to-text": "8.2.1",
+		"nekos.life": "3.0.0",
+		"node-fetch": "3.2.10",
 		"opusscript": "0.0.8",
-		"youtube-sr": "4.1.15",
-		"ytdl-core": "4.11.0"
+		"youtube-sr": "4.3.4",
+		"ytdl-core": "4.11.2"
 	},
 	"devDependencies": {
-		"eslint": "8.10.0",
+		"eslint": "8.24.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-prettier": "^4.2.1",
-		"prettier": "2.5.1"
+		"prettier": "2.7.1"
 	}
 }
