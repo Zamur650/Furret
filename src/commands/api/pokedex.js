@@ -1,20 +1,20 @@
-const Discord = require('discord.js')
-const fetch = require('node-fetch')
+const Discord = require("discord.js");
+const fetch = require("node-fetch");
 
 module.exports = {
-	name: 'pokedex',
-	aliases: ['name'],
-	category: 'api',
-	description: 'Get info about pokemon / atack / ability / item',
+	name: "pokedex",
+	aliases: ["name"],
+	category: "api",
+	description: "Get info about pokemon / atack / ability / item",
 
 	run: async (client, message, args) => {
 		let script = await (
-			await fetch('https://play.pokemonshowdown.com/data/pokedex.js?4076b733/')
-		).text()
+			await fetch("https://play.pokemonshowdown.com/data/pokedex.js?4076b733/")
+		).text();
 
-		eval(script)
+		eval(script);
 
-		let response
+		let response;
 
 		if (parseInt(args[0]).toString() === args[0]) {
 			for (let i in Object.keys(exports.BattlePokedex)) {
@@ -24,39 +24,39 @@ module.exports = {
 					].num.toString() == args[0]
 				) {
 					response =
-						exports.BattlePokedex[Object.keys(exports.BattlePokedex)[i]]
-					break
+						exports.BattlePokedex[Object.keys(exports.BattlePokedex)[i]];
+					break;
 				}
 			}
 		} else {
 			response =
-				exports.BattlePokedex[args.join('').split('-').join('').toLowerCase()]
+				exports.BattlePokedex[args.join("").split("-").join("").toLowerCase()];
 		}
 
 		if (response) {
 			const Embed = new Discord.MessageEmbed()
 				.setColor(process.env.BOT_COLOR)
 				.setTitle(`Name: ${response.name}, ID: ${response.num}`)
-				.setDescription(`Types: ${response.types.join(' / ')}`)
+				.setDescription(`Types: ${response.types.join(" / ")}`)
 				.setThumbnail(
 					`https://play.pokemonshowdown.com/sprites/ani/${response.name
-						.replace('-Y', 'y')
-						.replace('-X', 'x')
+						.replace("-Y", "y")
+						.replace("-X", "x")
 						.toLowerCase()}.gif`
 				)
 				.addFields(
 					{
-						name: 'Height (m)',
+						name: "Height (m)",
 						value: response.heightm,
 						inline: true
 					},
 					{
-						name: 'Weight (kg)',
+						name: "Weight (kg)",
 						value: response.weightkg,
 						inline: true
 					},
 					{
-						name: 'Total',
+						name: "Total",
 						value:
 							response.baseStats.hp +
 							response.baseStats.atk +
@@ -67,208 +67,208 @@ module.exports = {
 						inline: true
 					},
 					{
-						name: 'HP',
+						name: "HP",
 						value: response.baseStats.hp,
 						inline: true
 					},
 					{
-						name: 'ATK',
+						name: "ATK",
 						value: response.baseStats.atk,
 						inline: true
 					},
 					{
-						name: 'DEF',
+						name: "DEF",
 						value: response.baseStats.def,
 						inline: true
 					},
 					{
-						name: 'SPATK',
+						name: "SPATK",
 						value: response.baseStats.spa,
 						inline: true
 					},
 					{
-						name: 'SPDEF',
+						name: "SPDEF",
 						value: response.baseStats.spd,
 						inline: true
 					},
 					{
-						name: 'SPEED',
+						name: "SPEED",
 						value: response.baseStats.spe,
 						inline: true
 					},
 					{
-						name: 'Abilities',
+						name: "Abilities",
 						value: Object.entries(response.abilities)
 							.map((ability) =>
-								ability[0] != 'H' ? ability[1] : `(${ability[1]})`
+								ability[0] != "H" ? ability[1] : `(${ability[1]})`
 							)
-							.join('\n'),
+							.join("\n"),
 						inline: true
 					},
 					{
-						name: 'Egg groups',
-						value: response.eggGroups.join('\n'),
+						name: "Egg groups",
+						value: response.eggGroups.join("\n"),
 						inline: true
 					}
-				)
+				);
 
 			if (response.prevo != undefined) {
 				Embed.addFields({
-					name: 'Prevo',
+					name: "Prevo",
 					value: response.prevo,
 					inline: true
-				})
+				});
 			}
 			if (response.evoLevel != undefined) {
 				Embed.addFields({
-					name: 'Evo Level',
+					name: "Evo Level",
 					value: response.evoLevel,
 					inline: true
-				})
+				});
 			}
 			if (response.evoType != undefined) {
 				Embed.addFields({
-					name: 'Evo type',
+					name: "Evo type",
 					value: response.evoType,
 					inline: true
-				})
+				});
 			}
 			if (response.evoCondition != undefined) {
 				Embed.addFields({
-					name: 'Evo condition',
+					name: "Evo condition",
 					value: response.evoCondition,
 					inline: true
-				})
+				});
 			}
 			if (response.evoItem != undefined) {
 				Embed.addFields({
-					name: 'Evo item',
+					name: "Evo item",
 					value: response.evoItem,
 					inline: true
-				})
+				});
 			}
 			if (response.evos != undefined) {
-				let evos = ''
+				let evos = "";
 
 				for (let i in response.evos) {
-					evos += `${response.evos[i]}\n`
+					evos += `${response.evos[i]}\n`;
 				}
 
 				Embed.addFields({
-					name: 'Evos',
+					name: "Evos",
 					value: evos,
 					inline: true
-				})
+				});
 			}
 			if (response.otherFormes != undefined) {
 				Embed.addFields({
-					name: 'Other formes',
-					value: response.otherFormes.join('\n'),
+					name: "Other formes",
+					value: response.otherFormes.join("\n"),
 					inline: true
-				})
+				});
 			}
 
-			let gmax
+			let gmax;
 
 			if (response.cannotDynamax == undefined) {
-				gmax = true
+				gmax = true;
 			} else {
-				gmax = false
+				gmax = false;
 			}
 
 			Embed.addFields(
 				{
-					name: 'Can G-MAX',
+					name: "Can G-MAX",
 					value: gmax,
 					inline: true
 				},
 				{
-					name: 'Tier',
+					name: "Tier",
 					value: response.tier,
 					inline: true
 				}
-			)
+			);
 
-			return message.channel.send(Embed)
+			return message.channel.send(Embed);
 		}
 		script = await (
-			await fetch('https://play.pokemonshowdown.com/data/moves.js?2e0bee6d/')
-		).text()
+			await fetch("https://play.pokemonshowdown.com/data/moves.js?2e0bee6d/")
+		).text();
 
-		eval(script)
+		eval(script);
 
 		response =
-			exports.BattleMovedex[args.join('').split('-').join('').toLowerCase()]
+			exports.BattleMovedex[args.join("").split("-").join("").toLowerCase()];
 
 		if (response) {
 			const Embed = new Discord.MessageEmbed()
 				.setColor(process.env.BOT_COLOR)
 				.setTitle(
-					`Name: ${args.join(' ').split('-').join(' ').toLowerCase()}, ID: ${
+					`Name: ${args.join(" ").split("-").join(" ").toLowerCase()}, ID: ${
 						response.num
 					}`
 				)
 				.setDescription(response.shortDesc)
 				.addFields(
 					{
-						name: 'Type',
+						name: "Type",
 						value: response.type,
 						inline: true
 					},
 					{
-						name: 'Category',
+						name: "Category",
 						value: response.category,
 						inline: true
 					},
 					{
-						name: 'Base power',
+						name: "Base power",
 						value: response.basePower,
 						inline: true
 					},
 					{
-						name: 'Accuracy',
+						name: "Accuracy",
 						value: response.accuracy,
 						inline: true
 					},
 					{
-						name: 'PP',
+						name: "PP",
 						value: response.pp,
 						inline: true
 					},
 					{
-						name: 'Priority',
+						name: "Priority",
 						value: response.priority,
 						inline: true
 					}
-				)
-			message.channel.send(Embed)
+				);
+			message.channel.send(Embed);
 		}
 		script = await (
 			await fetch(
-				'https://play.pokemonshowdown.com/data/abilities.js?a222a0d9/'
+				"https://play.pokemonshowdown.com/data/abilities.js?a222a0d9/"
 			)
-		).text()
+		).text();
 
-		eval(script)
+		eval(script);
 
 		response =
-			exports.BattleAbilities[args.join('').split('-').join('').toLowerCase()]
+			exports.BattleAbilities[args.join("").split("-").join("").toLowerCase()];
 
 		if (response) {
 			const Embed = new Discord.MessageEmbed()
 				.setColor(process.env.BOT_COLOR)
 				.setTitle(`Name: ${response.name}, ID: ${response.num}`)
-				.setDescription(response.shortDesc)
-			return message.channel.send(Embed)
+				.setDescription(response.shortDesc);
+			return message.channel.send(Embed);
 		}
 
 		script = await (
-			await fetch('https://play.pokemonshowdown.com/data/items.js?3b87d391/')
-		).text()
+			await fetch("https://play.pokemonshowdown.com/data/items.js?3b87d391/")
+		).text();
 
-		eval(script)
+		eval(script);
 		response =
-			exports.BattleItems[args.join('').split('-').join('').toLowerCase()]
+			exports.BattleItems[args.join("").split("-").join("").toLowerCase()];
 
 		if (response) {
 			const Embed = new Discord.MessageEmbed()
@@ -276,13 +276,13 @@ module.exports = {
 				.setTitle(`Name: ${response.name}, ID: ${response.num}`)
 				.setDescription(response.shortDesc)
 				.addFields({
-					name: 'Fling base power',
+					name: "Fling base power",
 					value: response.fling.basePower,
 					inline: true
-				})
-			return message.channel.send(Embed)
+				});
+			return message.channel.send(Embed);
 		}
 
-		message.channel.send('Error :no_entry_sign:')
+		message.channel.send("Error :no_entry_sign:");
 	}
-}
+};

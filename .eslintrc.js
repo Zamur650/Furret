@@ -4,14 +4,14 @@ module.exports = {
 		commonjs: true,
 		es2021: true
 	},
-	extends: 'eslint:recommended',
+	extends: "eslint:recommended",
 	parserOptions: {
 		ecmaVersion: 2021
 	},
 	rules: {
-		indent: ['error', 'tab'],
-		'linebreak-style': ['error', 'unix'],
-		quotes: ['error', 'single'],
-		semi: ['error', 'never']
+		indent: ["error", "tab"],
+		"linebreak-style": ["error", "unix"],
+		quotes: ["error", "single"],
+		semi: ["error", "never"]
 	}
-}
+};
