@@ -1,14 +1,14 @@
-const Discord = require('discord.js')
-const fetch = require('node-fetch')
+const Discord = require("discord.js");
+const fetch = require("node-fetch");
 
 module.exports = {
-	name: 'anime',
-	aliases: ['name'],
-	category: 'api',
-	description: 'Find anime',
+	name: "anime",
+	aliases: ["name"],
+	category: "api",
+	description: "Find anime",
 
 	run: async (client, message, args) => {
-		fetch(`https://kitsu.io/api/edge/anime?filter[text]=${args.join('%20')}`)
+		fetch(`https://kitsu.io/api/edge/anime?filter[text]=${args.join("%20")}`)
 			.then((response) => response.json())
 			.then((response) => {
 				const Embed = new Discord.MessageEmbed()
@@ -18,37 +18,37 @@ module.exports = {
 					.setImage(response.data[0].attributes.posterImage.original)
 					.addFields(
 						{
-							name: 'Rating',
+							name: "Rating",
 							value: response.data[0].attributes.averageRating,
 							inline: true
 						},
 						{
-							name: 'Age rating',
+							name: "Age rating",
 							value: response.data[0].attributes.ageRating,
 							inline: true
 						},
 						{
-							name: 'NSFW',
+							name: "NSFW",
 							value: response.data[0].attributes.nsfw,
 							inline: true
 						},
 						{
-							name: 'Episode count',
+							name: "Episode count",
 							value: response.data[0].attributes.episodeCount,
 							inline: true
 						},
 						{
-							name: 'Episode length',
+							name: "Episode length",
 							value: response.data[0].attributes.episodeLength,
 							inline: true
 						},
 						{
-							name: 'Start date',
+							name: "Start date",
 							value: response.data[0].attributes.startDate,
 							inline: true
 						}
-					)
-				message.channel.send(Embed)
-			})
+					);
+				message.channel.send(Embed);
+			});
 	}
-}
+};

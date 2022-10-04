@@ -1,24 +1,24 @@
-const Discord = require('discord.js')
-const fetch = require('node-fetch')
+const Discord = require("discord.js");
+const fetch = require("node-fetch");
 
 module.exports = {
-	name: 'genshin',
-	aliases: ['name'],
-	category: 'api',
-	description: 'Get info about character / weapon / set of artifacts',
+	name: "genshin",
+	aliases: ["name"],
+	category: "api",
+	description: "Get info about character / weapon / set of artifacts",
 
 	run: async (client, message, args) => {
-		let name = args.join(' ').split(' ').join('-').toLowerCase()
+		let name = args.join(" ").split(" ").join("-").toLowerCase();
 
 		let response = await (
 			await fetch(`https://api.genshin.dev/characters/${name.toLowerCase()}`)
-		).json()
+		).json();
 
 		if (response.name) {
-			let rarity = ''
+			let rarity = "";
 
 			for (let i = 0; i < response.rarity; i++) {
-				rarity += process.env.STAR_EMOJI
+				rarity += process.env.STAR_EMOJI;
 			}
 
 			const Embed = new Discord.MessageEmbed()
@@ -28,48 +28,48 @@ module.exports = {
 				.setThumbnail(`https://api.genshin.dev/characters/${name}/icon.png`)
 				.addFields(
 					{
-						name: 'Rarity',
+						name: "Rarity",
 						value: rarity,
 						inline: true
 					},
 					{
-						name: 'Nation',
+						name: "Nation",
 						value: response.nation,
 						inline: true
 					},
 					{
-						name: 'Birthday',
+						name: "Birthday",
 						value: response.birthday.substr(response.birthday.length - 5),
 						inline: true
 					},
 					{
-						name: 'Constellation',
+						name: "Constellation",
 						value: response.constellation,
 						inline: true
 					},
 					{
-						name: 'Vision',
+						name: "Vision",
 						value: response.vision,
 						inline: true
 					},
 					{
-						name: 'Weapon',
+						name: "Weapon",
 						value: response.weapon,
 						inline: true
 					}
-				)
-			return message.channel.send(Embed)
+				);
+			return message.channel.send(Embed);
 		}
 
 		response = await (
 			await fetch(`https://api.genshin.dev/weapons/${name}`)
-		).json()
+		).json();
 
 		if (response.name) {
-			let rarity = ''
+			let rarity = "";
 
 			for (let i = 0; i < response.rarity; i++) {
-				rarity += process.env.STAR_EMOJI
+				rarity += process.env.STAR_EMOJI;
 			}
 
 			const Embed = new Discord.MessageEmbed()
@@ -79,48 +79,48 @@ module.exports = {
 				.setThumbnail(`https://api.genshin.dev/weapons/${name}/icon.png`)
 				.addFields(
 					{
-						name: 'Rarity',
+						name: "Rarity",
 						value: rarity,
 						inline: true
 					},
 					{
-						name: 'Name',
+						name: "Name",
 						value: response.passiveName,
 						inline: true
 					},
 					{
-						name: 'How to get',
+						name: "How to get",
 						value: response.location,
 						inline: true
 					},
 					{
-						name: 'Type',
+						name: "Type",
 						value: response.type,
 						inline: true
 					},
 					{
-						name: 'Supporting stat',
+						name: "Supporting stat",
 						value: response.subStat,
 						inline: true
 					},
 					{
-						name: 'Base attack',
+						name: "Base attack",
 						value: response.baseAttack,
 						inline: true
 					}
-				)
-			return message.channel.send(Embed)
+				);
+			return message.channel.send(Embed);
 		}
 
 		response = await (
 			await fetch(`https://api.genshin.dev/artifacts/${name}`)
-		).json()
+		).json();
 
 		if (response.name) {
-			let rarity = ''
+			let rarity = "";
 
 			for (let i = 0; i < response.max_rarity; i++) {
-				rarity += process.env.STAR_EMOJI
+				rarity += process.env.STAR_EMOJI;
 			}
 
 			const Embed = new Discord.MessageEmbed()
@@ -132,20 +132,20 @@ module.exports = {
 				)
 				.addFields(
 					{
-						name: '2 piece bonus',
-						value: response['2-piece_bonus'],
+						name: "2 piece bonus",
+						value: response["2-piece_bonus"],
 						inline: true
 					},
 					{
-						name: '4 piece bonus',
-						value: response['4-piece_bonus'],
+						name: "4 piece bonus",
+						value: response["4-piece_bonus"],
 						inline: true
 					}
-				)
+				);
 
-			return message.channel.send(Embed)
+			return message.channel.send(Embed);
 		}
 
-		message.channel.send('Error :no_entry_sign:')
+		message.channel.send("Error :no_entry_sign:");
 	}
-}
+};
