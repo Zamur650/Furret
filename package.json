@@ -9,7 +9,7 @@
 		"lint": "eslint ./src --ext .js"
 	},
 	"author": "Zamur650",
-	"license": "MPL-2.0",
+	"license": "MIT",
 	"dependencies": {
 		"@iamtraction/google-translate": "1.1.2",
 		"avconv": "3.1.0",
