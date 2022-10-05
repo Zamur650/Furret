@@ -5,7 +5,7 @@
 
 <h3 align="center">Furret</h3>
 
-<p align="center"> Bot for discord js 12.
+<p align="center"> Discord bot for text commands
     <br>
 </p>
 

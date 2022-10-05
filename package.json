@@ -1,14 +1,18 @@
 {
 	"name": "furret",
 	"version": "0.2.1",
-	"description": "Discord bot by Zamur650",
+	"description": "Discord bot for text commands",
 	"main": "./src/index.js",
 	"scripts": {
 		"start": "node .",
 		"format": "npx prettier --write .",
 		"lint": "eslint ./src --ext .js"
 	},
-	"author": "Zamur650",
+	"author": {
+		"email": "alexiy.rybin@gmail.com",
+		"name": "Alexiy Rybin",
+		"url": "https://tapni.su/"
+	},
 	"license": "MIT",
 	"dependencies": {
 		"@iamtraction/google-translate": "1.1.2",
