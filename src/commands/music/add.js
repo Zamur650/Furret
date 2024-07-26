@@ -15,6 +15,6 @@ module.exports = {
 				global.queue[global.queue.length] = result;
 			});
 		}
-		message.channel.send("Добавила в очередь :musical_note:");
+		message.channel.send("Добавил в очередь :musical_note:");
 	}
 };
