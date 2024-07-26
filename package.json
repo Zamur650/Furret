@@ -1,6 +1,6 @@
 {
 	"name": "furret",
-	"version": "0.2.1",
+	"version": "0.2.2",
 	"description": "Discord bot for text commands",
 	"main": "./src/index.js",
 	"scripts": {
@@ -9,30 +9,28 @@
 		"lint": "eslint ./src --ext .js"
 	},
 	"author": {
-		"email": "alexiy.rybin@gmail.com",
-		"name": "Alexiy Rybin",
+		"email": "0xalekseirybin@gmail.com",
+		"name": "Aleksei Rybin",
 		"url": "https://tapni.su/"
 	},
 	"license": "MIT",
 	"dependencies": {
-		"@iamtraction/google-translate": "1.1.2",
-		"avconv": "3.1.0",
-		"canvas": "2.10.1",
-		"discord.js": "12.5.3",
-		"dotenv": "16.0.3",
-		"ffmpeg": "0.0.4",
-		"ffmpeg-static": "5.1.0",
-		"html-to-text": "8.2.1",
-		"nekos.life": "3.0.0",
-		"node-fetch": "3.2.10",
+		"@iamtraction/google-translate": "^1.1.2",
+		"avconv": "^3.1.0",
+		"canvas": "^2.11.2",
+		"discord.js": "^12.5.3",
+		"dotenv": "^16.4.5",
+		"html-to-text": "^9.0.5",
+		"nekos.life": "^3.0.0",
+		"node-fetch": "^2.7.0",
 		"opusscript": "0.0.8",
-		"youtube-sr": "4.3.4",
-		"ytdl-core": "4.11.2"
+		"youtube-sr": "^4.3.11",
+		"ytdl-core": "^4.11.5"
 	},
 	"devDependencies": {
-		"eslint": "8.24.0",
-		"eslint-config-prettier": "^8.5.0",
+		"eslint": "^8.57.0",
+		"eslint-config-prettier": "^8.10.0",
 		"eslint-plugin-prettier": "^4.2.1",
-		"prettier": "2.7.1"
+		"prettier": "3.3.3"
 	}
 }

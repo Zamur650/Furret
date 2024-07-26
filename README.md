@@ -39,13 +39,20 @@ Check all commands
 
 ### Prerequisites
 
-`node >= 12`
+- `node >= 14`
+- `cairo`
+- `ffmpeg`
+- `pango`
+
 
 ### Installing
 
 Install dependencies
 
-`npm i` / `yarn` / `pnpm i`
+```sh
+npm install -g pnpm
+pnpm install
+```
 
 Start the bot
 
