@@ -5,8 +5,8 @@
 	"main": "./src/index.js",
 	"scripts": {
 		"start": "node .",
-		"format": "npx prettier --write .",
-		"lint": "eslint ./src --ext .js"
+		"format": "prettier --write .",
+		"lint": "eslint ./src"
 	},
 	"author": {
 		"email": "0xalekseirybin@gmail.com",
