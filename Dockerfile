@@ -1,4 +1,4 @@
-FROM node:14-alpine3.12 AS base
+FROM node:14-alpine3.17 AS base
 LABEL authors="tapnisu"
 
 ENV PNPM_HOME="/pnpm"
@@ -8,7 +8,7 @@ WORKDIR /app
 
 RUN apk add --no-cache cairo ffmpeg pango
 COPY package.json pnpm-lock.yaml /app/
-RUN npm install -g pnpm@7
+RUN corepack enable && corepack prepare
 
 FROM base AS os-build-deps
 RUN apk add --no-cache \
